@@ -19,3 +19,6 @@
 {"component":"rabbitmq-consumer","level":"info","message":"Consumidor iniciado","queue":"images-to-process","timestamp":"2025-04-05T07:49:48Z"}
 {"component":"main","level":"info","message":"Servicio inicializado correctamente","timestamp":"2025-04-05T07:49:48Z"}
 {"component":"main","level":"info","message":"Esperando mensajes...","timestamp":"2025-04-05T07:49:48Z"}
+{"component":"main","level":"info","message":"Señal de terminacion recibida. Iniciando apagado ordenado...","timestamp":"2025-04-05T08:14:24Z"}
+{"component":"main","level":"info","message":"Consumidor detenido correctamente","timestamp":"2025-04-05T08:14:24Z"}
+{"component":"main","level":"info","message":"Servicio finalizado","timestamp":"2025-04-05T08:14:24Z"}

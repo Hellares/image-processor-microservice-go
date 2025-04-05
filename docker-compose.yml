@@ -20,12 +20,12 @@ services:
       QUEUE_DLX: "images-process-failed"
       
       # Recursos y rendimiento
-      MAX_WORKERS: "8"
-      PREFETCH_COUNT: "10"
+      MAX_WORKERS: "4"
+      PREFETCH_COUNT: "5"
       PROCESSING_TIMEOUT: "60"
       
-      # Tamaño umbral para procesamiento de imágenes (1MB en bytes)
-      IMAGE_SIZE_THRESHOLD: "1048576"
+      # Tamaño umbral para procesamiento de imágenes (2MB en bytes)
+      IMAGE_SIZE_THRESHOLD: "2097152"
       
       # Conexión RabbitMQ
       RABBITMQ_HEARTBEAT: "120"
@@ -49,8 +49,8 @@ services:
           cpus: '1.5'
           memory: 512M
         reservations:
-          cpus: '0.5'
-          memory: 256M
+          cpus: '0.8'
+          memory: 384M
     logging:
       driver: "json-file"
       options:
