@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  image-processor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: image-processor-service
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      # Puedes sobrescribir cualquier variable de entorno aquí
+      RABBITMQ_SERVERS: "amqp://jtorres:jtorres159.@161.132.50.183:5672"
+      DEBUG: "true"
+      MAX_WORKERS: "6"
+    networks:
+      - processor-network
+    # Depender de RabbitMQ si lo ejecutas localmente
+    # depends_on:
+    #   - rabbitmq
+
+  # Descomenta si necesitas ejecutar RabbitMQ localmente
+  # rabbitmq:
+  #   image: rabbitmq:3-management
+  #   container_name: rabbitmq
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: jtorres
+  #     RABBITMQ_DEFAULT_PASS: jtorres159.
+  #   volumes:
+  #     - rabbitmq_data:/var/lib/rabbitmq
+  #   networks:
+  #     - processor-network
+
+networks:
+  processor-network:
+    driver: bridge
+
+# Volumes para persistencia
+volumes:
+  rabbitmq_data:

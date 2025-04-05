@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  image-processor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: image-processor:1.0.0
+    container_name: image-processor-service
+    restart: always
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      # Configuración de RabbitMQ
+      RABBITMQ_SERVERS: "amqp://jtorres:jtorres159.@161.132.50.183:5672"
+      
+      # Colas
+      QUEUE_IN: "images-to-process"
+      QUEUE_OUT: "processed-images"
+      QUEUE_DLX: "images-process-failed"
+      
+      # Recursos y rendimiento
+      MAX_WORKERS: "8"
+      PREFETCH_COUNT: "10"
+      PROCESSING_TIMEOUT: "60"
+      
+      # Tamaño umbral para procesamiento de imágenes (1MB en bytes)
+      IMAGE_SIZE_THRESHOLD: "1048576"
+      
+      # Conexión RabbitMQ
+      RABBITMQ_HEARTBEAT: "120"
+      RABBITMQ_BLOCKED_CONNECTION_TIMEOUT: "300"
+      RABBITMQ_CONNECTION_TIMEOUT: "20000"
+      RABBITMQ_RETRY_DELAY: "5"
+      
+      # Configuración de logs
+      LOG_LEVEL: "info"
+      LOG_TO_FILE: "true"
+      LOG_DIR: "/app/logs"
+      
+      # Modo debug desactivado en producción
+      DEBUG: "false"
+    networks:
+      - elastika-network
+    # Limitar recursos para evitar sobrecarga
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+networks:
+  elastika-network:
+    driver: bridge
+    name: elastika-network
