@@ -72,6 +72,7 @@ type Response struct {
 	Success       bool                   `json:"success"`
 	Error         string                 `json:"error,omitempty"`
 	Data          string                 `json:"data,omitempty"`
+	ProcessedData string                 `json:"processedData,omitempty"`
 }
 
 // NewImageProcessor crea una nueva instancia del procesador de imágenes
@@ -281,6 +282,10 @@ func (p *ImageProcessor) ProcessMessage(body []byte, delivery amqp.Delivery) err
 	log.Printf("Imagen procesada: %s - Reduccion: %.2f%%, Tamanio: %.2fKB -> %.2fKB, Duracion: %.2fms",
 		filename, reductionPercent, float64(originalSize)/1024, float64(processedSize)/1024, float64(processingTime))
 
+		if len(processedData) > 0 {
+			// Incluir los datos procesados en la respuesta
+			response.ProcessedData = base64.StdEncoding.EncodeToString(processedData)
+		}
 	// Enviar respuesta
 	p.sendResponse(response, delivery)
 	return nil

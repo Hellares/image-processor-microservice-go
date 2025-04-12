@@ -1,233 +1,53 @@
-2025/04/05 02:32:25 Cargando configuraci├│n del sistema...
-2025/04/05 02:32:25 Archivo .env cargado correctamente desde: C:\Users\USER\Desktop\Proyecto principal\image-processing-microservice-go\.env
-2025/04/05 02:32:25 Modo de depuracion activado
-2025/04/05 02:32:25 Configuraci├│n cargada correctamente:
-2025/04/05 02:32:25 - RabbitMQ URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/05 02:32:25 - Cola de entrada: images-to-process
-2025/04/05 02:32:25 - Cola de salida: processed-images
-2025/04/05 02:32:25 - Trabajadores m├íximos: 6
-2025/04/05 02:32:25 - Modo Debug: true
-{"level":"info","message":"Sistema de logs inicializado","timestamp":"2025-04-05T02:32:25-05:00"}
-{"component":"main","level":"info","message":"============= SERVICIO DE PROCESAMIENTO DE IMAGENES =============","timestamp":"2025-04-05T02:32:25-05:00"}
-{"component":"main","level":"info","message":"Iniciando servicio de procesamiento de imagenes (Go)","timestamp":"2025-04-05T02:32:25-05:00"}
-2025/04/05 02:32:25 PID 26044 guardado en processor.pid
-{"component":"main","level":"info","message":"Creando procesador de imagenes...","timestamp":"2025-04-05T02:32:25-05:00"}
-2025/04/05 02:32:25 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/05 02:32:25 Todas las colas declaradas correctamente
-2025/04/05 02:32:25 Conexion establecida con RabbitMQ correctamente
-{"component":"main","level":"info","message":"Creando consumidor...","timestamp":"2025-04-05T02:32:25-05:00"}
-{"component":"main","level":"info","message":"Iniciando consumidor...","timestamp":"2025-04-05T02:32:25-05:00"}
-2025/04/05 02:32:25 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/05 02:32:25 Todas las colas declaradas correctamente
-2025/04/05 02:32:25 Conexion establecida con RabbitMQ correctamente
-2025/04/05 02:32:25 Solicitando suscripcion a cola 'images-to-process', autoAck=false
-2025/04/05 02:32:25 Intentando Consume() en cola 'images-to-process'
-2025/04/05 02:32:25 Suscripcion exitosa a cola 'images-to-process'
-{"component":"rabbitmq-consumer","level":"info","message":"Consumidor iniciado","queue":"images-to-process","timestamp":"2025-04-05T02:32:25-05:00"}
-2025/04/05 02:32:25 Mensaje recibido: 2238332 bytes
-2025/04/05 02:32:25 Mensaje recibido en ProcessMessage: 2238332 bytes
-2025/04/05 02:32:25 Mensaje en formato NestJS recibido
-2025/04/05 02:32:25 Procesando imagen: ID=img_1743834737842_q5nr8pxc, Archivo=1.6megas.png
-2025/04/05 02:32:25 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:32:25 Imagen procesada: 1.6megas.png - Reduccion: 91.95%, Tamanio: 1639.12KB -> 131.91KB, Duracion: 76.00ms
-2025/04/05 02:32:25 Mensaje de 464 bytes enviado a cola processed-images
-2025/04/05 02:32:25 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:32:25 Mensaje procesado correctamente
-2025/04/05 02:32:25 Mensaje recibido: 2238332 bytes
-2025/04/05 02:32:25 Mensaje recibido en ProcessMessage: 2238332 bytes
-2025/04/05 02:32:25 Mensaje en formato NestJS recibido
-2025/04/05 02:32:25 Procesando imagen: ID=img_1743835914480_w1jl0d13, Archivo=1.6megas.png
-2025/04/05 02:32:25 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:32:25 Imagen procesada: 1.6megas.png - Reduccion: 91.95%, Tamanio: 1639.12KB -> 131.91KB, Duracion: 78.00ms
-2025/04/05 02:32:25 Mensaje de 464 bytes enviado a cola processed-images
-2025/04/05 02:32:25 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:32:25 Mensaje procesado correctamente
-2025/04/05 02:32:25 Mensaje recibido: 2238332 bytes
-2025/04/05 02:32:25 Mensaje recibido en ProcessMessage: 2238332 bytes
-2025/04/05 02:32:25 Mensaje en formato NestJS recibido
-2025/04/05 02:32:25 Procesando imagen: ID=img_1743837914777_fbr02ci8, Archivo=1.6megas.png
-2025/04/05 02:32:25 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:32:25 Imagen procesada: 1.6megas.png - Reduccion: 91.95%, Tamanio: 1639.12KB -> 131.91KB, Duracion: 77.00ms
-2025/04/05 02:32:25 Mensaje de 464 bytes enviado a cola processed-images
-2025/04/05 02:32:25 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:32:25 Mensaje procesado correctamente
-2025/04/05 02:32:25 Mensaje recibido: 2238332 bytes
-2025/04/05 02:32:25 Mensaje recibido en ProcessMessage: 2238332 bytes
-2025/04/05 02:32:25 Mensaje en formato NestJS recibido
-2025/04/05 02:32:25 Procesando imagen: ID=img_1743837961587_tu4p08i3, Archivo=1.6megas.png
-2025/04/05 02:32:25 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:32:25 Imagen procesada: 1.6megas.png - Reduccion: 91.95%, Tamanio: 1639.12KB -> 131.91KB, Duracion: 85.00ms
-2025/04/05 02:32:25 Mensaje de 464 bytes enviado a cola processed-images
-2025/04/05 02:32:25 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:32:25 Mensaje procesado correctamente
-2025/04/05 02:32:25 Mensaje recibido: 504957 bytes
-2025/04/05 02:32:25 Mensaje recibido en ProcessMessage: 504957 bytes
-2025/04/05 02:32:25 Mensaje en formato NestJS recibido
-2025/04/05 02:32:25 Procesando imagen: ID=img_1743838057564_y0kvgkjt, Archivo=MONITORSS.png
-2025/04/05 02:32:25 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:32:25 Imagen procesada: MONITORSS.png - Reduccion: 83.88%, Tamanio: 369.56KB -> 59.58KB, Duracion: 26.00ms
-2025/04/05 02:32:25 Mensaje de 461 bytes enviado a cola processed-images
-2025/04/05 02:32:25 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:32:25 Mensaje procesado correctamente
-2025/04/05 02:32:25 Mensaje recibido: 2238332 bytes
-2025/04/05 02:32:25 Mensaje recibido en ProcessMessage: 2238332 bytes
-2025/04/05 02:32:25 Mensaje en formato NestJS recibido
-2025/04/05 02:32:25 Procesando imagen: ID=img_1743838057621_d5wgeqj6, Archivo=1.6megas.png
-2025/04/05 02:32:25 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:32:25 Imagen procesada: 1.6megas.png - Reduccion: 91.95%, Tamanio: 1639.12KB -> 131.91KB, Duracion: 74.00ms
-2025/04/05 02:32:25 Mensaje de 464 bytes enviado a cola processed-images
-2025/04/05 02:32:25 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:32:25 Mensaje procesado correctamente
-2025/04/05 02:32:25 Mensaje recibido: 4100115 bytes
-2025/04/05 02:32:25 Mensaje recibido en ProcessMessage: 4100115 bytes
-2025/04/05 02:32:25 Mensaje en formato NestJS recibido
-2025/04/05 02:32:25 Procesando imagen: ID=img_1743838057732_06266zcs, Archivo=3 megas.png
-2025/04/05 02:32:25 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:32:26 Imagen procesada: 3 megas.png - Reduccion: 94.33%, Tamanio: 3002.73KB -> 170.23KB, Duracion: 241.00ms
-2025/04/05 02:32:26 Mensaje de 466 bytes enviado a cola processed-images
-2025/04/05 02:32:26 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:32:26 Mensaje procesado correctamente
-{"component":"main","level":"info","message":"Enviando mensaje de prueba...","timestamp":"2025-04-05T02:32:26-05:00"}
-2025/04/05 02:32:26 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/05 02:32:26 Todas las colas declaradas correctamente
-2025/04/05 02:32:26 Conexion establecida con RabbitMQ correctamente
-2025/04/05 02:32:26 Mensaje de 184 bytes enviado a cola images-to-process
-{"component":"main","level":"info","message":"Mensaje de prueba enviado correctamente","timestamp":"2025-04-05T02:32:26-05:00"}
-2025/04/05 02:32:26 Mensaje recibido: 184 bytes
-2025/04/05 02:32:26 Mensaje recibido en ProcessMessage: 184 bytes
-2025/04/05 02:32:26 Mensaje en formato directo recibido
-2025/04/05 02:32:26 Procesando imagen: ID=test-123, Archivo=test.jpg
-2025/04/05 02:32:26 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:32:26 Imagen test.jpg procesada pero sin mejoras, usando original
-2025/04/05 02:32:26 Mensaje de 364 bytes enviado a cola processed-images
-2025/04/05 02:32:26 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:32:26 Mensaje procesado correctamente
-2025/04/05 02:32:26 Conexion con RabbitMQ cerrada correctamente
-{"component":"main","level":"info","message":"Servicio inicializado correctamente","timestamp":"2025-04-05T02:32:26-05:00"}
-{"component":"main","level":"info","message":"Esperando mensajes...","timestamp":"2025-04-05T02:32:26-05:00"}
-2025/04/05 02:32:45 Mensaje recibido: 504957 bytes
-2025/04/05 02:32:45 Mensaje recibido en ProcessMessage: 504957 bytes
-2025/04/05 02:32:45 Mensaje en formato NestJS recibido
-2025/04/05 02:32:45 Procesando imagen: ID=img_1743838365264_2mrlzfzy, Archivo=MONITORSS.png
-2025/04/05 02:32:45 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:32:45 Imagen procesada: MONITORSS.png - Reduccion: 83.88%, Tamanio: 369.56KB -> 59.58KB, Duracion: 28.00ms
-2025/04/05 02:32:45 Mensaje de 461 bytes enviado a cola processed-images
-2025/04/05 02:32:45 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:32:45 Mensaje procesado correctamente
-2025/04/05 02:32:45 Mensaje recibido: 2238332 bytes
-2025/04/05 02:32:45 Mensaje recibido en ProcessMessage: 2238332 bytes
-2025/04/05 02:32:45 Mensaje en formato NestJS recibido
-2025/04/05 02:32:45 Procesando imagen: ID=img_1743838365322_ej5tet88, Archivo=1.6megas.png
-2025/04/05 02:32:45 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:32:45 Imagen procesada: 1.6megas.png - Reduccion: 91.95%, Tamanio: 1639.12KB -> 131.91KB, Duracion: 78.00ms
-2025/04/05 02:32:45 Mensaje de 464 bytes enviado a cola processed-images
-2025/04/05 02:32:45 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:32:45 Mensaje procesado correctamente
-2025/04/05 02:32:45 Mensaje recibido: 4100115 bytes
-2025/04/05 02:32:45 Mensaje recibido en ProcessMessage: 4100115 bytes
-2025/04/05 02:32:45 Mensaje en formato NestJS recibido
-2025/04/05 02:32:45 Procesando imagen: ID=img_1743838365478_f1g12j0s, Archivo=3 megas.png
-2025/04/05 02:32:45 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:32:45 Imagen procesada: 3 megas.png - Reduccion: 94.33%, Tamanio: 3002.73KB -> 170.23KB, Duracion: 236.00ms
-2025/04/05 02:32:45 Mensaje de 466 bytes enviado a cola processed-images
-2025/04/05 02:32:45 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:32:45 Mensaje procesado correctamente
-2025/04/05 02:33:06 Mensaje recibido: 2238332 bytes
-2025/04/05 02:33:06 Mensaje recibido en ProcessMessage: 2238332 bytes
-2025/04/05 02:33:06 Mensaje en formato NestJS recibido
-2025/04/05 02:33:06 Procesando imagen: ID=img_1743838386193_supov8g5, Archivo=1.6megas.png
-2025/04/05 02:33:06 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:33:06 Imagen procesada: 1.6megas.png - Reduccion: 91.95%, Tamanio: 1639.12KB -> 131.91KB, Duracion: 78.00ms
-2025/04/05 02:33:06 Mensaje de 464 bytes enviado a cola processed-images
-2025/04/05 02:33:06 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:33:06 Mensaje procesado correctamente
-2025/04/05 02:33:46 Mensaje recibido: 1223964 bytes
-2025/04/05 02:33:46 Mensaje recibido en ProcessMessage: 1223964 bytes
-2025/04/05 02:33:46 Mensaje en formato NestJS recibido
-2025/04/05 02:33:46 Procesando imagen: ID=img_1743838426128_hxons9jb, Archivo=analisis-lego-2k-drive-3033272.webp
-2025/04/05 02:33:46 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:33:46 Error al procesar imagen: error al decodificar imagen: image: unknown format
-2025/04/05 02:33:46 Mensaje de 205 bytes enviado a cola processed-images
-2025/04/05 02:33:46 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:33:46 Error procesando mensaje: error al decodificar imagen: image: unknown format
-2025/04/05 02:45:49 Mensaje recibido: 1223964 bytes
-2025/04/05 02:45:49 Mensaje recibido en ProcessMessage: 1223964 bytes
-2025/04/05 02:45:49 Mensaje en formato NestJS recibido
-2025/04/05 02:45:49 Procesando imagen: ID=img_1743839148973_eqex3bsr, Archivo=analisis-lego-2k-drive-3033272.webp
-2025/04/05 02:45:49 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:45:49 Error al procesar imagen: error al decodificar imagen: image: unknown format
-2025/04/05 02:45:49 Mensaje de 205 bytes enviado a cola processed-images
-2025/04/05 02:45:49 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:45:49 Error procesando mensaje: error al decodificar imagen: image: unknown format
-2025/04/05 02:45:55 Mensaje recibido: 1223964 bytes
-2025/04/05 02:45:55 Mensaje recibido en ProcessMessage: 1223964 bytes
-2025/04/05 02:45:55 Mensaje en formato NestJS recibido
-2025/04/05 02:45:55 Procesando imagen: ID=img_1743839155735_ejowkzeq, Archivo=analisis-lego-2k-drive-3033272.webp
-2025/04/05 02:45:55 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:45:55 Error al procesar imagen: error al decodificar imagen: image: unknown format
-2025/04/05 02:45:55 Mensaje de 205 bytes enviado a cola processed-images
-2025/04/05 02:45:55 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:45:55 Error procesando mensaje: error al decodificar imagen: image: unknown format
-2025/04/05 02:46:13 Mensaje recibido: 504957 bytes
-2025/04/05 02:46:13 Mensaje recibido en ProcessMessage: 504957 bytes
-2025/04/05 02:46:13 Mensaje en formato NestJS recibido
-2025/04/05 02:46:13 Procesando imagen: ID=img_1743839173288_k0mt9str, Archivo=MONITORSS.png
-2025/04/05 02:46:13 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:46:13 Imagen procesada: MONITORSS.png - Reduccion: 83.88%, Tamanio: 369.56KB -> 59.58KB, Duracion: 27.00ms
-2025/04/05 02:46:13 Mensaje de 461 bytes enviado a cola processed-images
-2025/04/05 02:46:13 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:46:13 Mensaje procesado correctamente
-2025/04/05 02:46:13 Mensaje recibido: 2238332 bytes
-2025/04/05 02:46:13 Mensaje recibido en ProcessMessage: 2238332 bytes
-2025/04/05 02:46:13 Mensaje en formato NestJS recibido
-2025/04/05 02:46:13 Procesando imagen: ID=img_1743839173366_9tcr1jng, Archivo=1.6megas.png
-2025/04/05 02:46:13 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:46:13 Imagen procesada: 1.6megas.png - Reduccion: 91.95%, Tamanio: 1639.12KB -> 131.91KB, Duracion: 81.00ms
-2025/04/05 02:46:13 Mensaje de 464 bytes enviado a cola processed-images
-2025/04/05 02:46:13 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:46:13 Mensaje procesado correctamente
-2025/04/05 02:46:13 Mensaje recibido: 4100115 bytes
-2025/04/05 02:46:13 Mensaje recibido en ProcessMessage: 4100115 bytes
-2025/04/05 02:46:13 Mensaje en formato NestJS recibido
-2025/04/05 02:46:13 Procesando imagen: ID=img_1743839173491_xva8b408, Archivo=3 megas.png
-2025/04/05 02:46:13 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:46:14 Imagen procesada: 3 megas.png - Reduccion: 94.33%, Tamanio: 3002.73KB -> 170.23KB, Duracion: 251.00ms
-2025/04/05 02:46:14 Mensaje de 466 bytes enviado a cola processed-images
-2025/04/05 02:46:14 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:46:14 Mensaje procesado correctamente
-2025/04/05 02:46:18 Mensaje recibido: 504957 bytes
-2025/04/05 02:46:18 Mensaje recibido en ProcessMessage: 504957 bytes
-2025/04/05 02:46:18 Mensaje en formato NestJS recibido
-2025/04/05 02:46:18 Procesando imagen: ID=img_1743839178584_wgwtaoj2, Archivo=MONITORSS.png
-2025/04/05 02:46:18 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:46:18 Imagen procesada: MONITORSS.png - Reduccion: 83.88%, Tamanio: 369.56KB -> 59.58KB, Duracion: 28.00ms
-2025/04/05 02:46:18 Mensaje de 461 bytes enviado a cola processed-images
-2025/04/05 02:46:18 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:46:18 Mensaje procesado correctamente
-2025/04/05 02:46:18 Mensaje recibido: 2238332 bytes
-2025/04/05 02:46:18 Mensaje recibido en ProcessMessage: 2238332 bytes
-2025/04/05 02:46:18 Mensaje en formato NestJS recibido
-2025/04/05 02:46:18 Procesando imagen: ID=img_1743839178651_5ib0wp2l, Archivo=1.6megas.png
-2025/04/05 02:46:18 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:46:18 Imagen procesada: 1.6megas.png - Reduccion: 91.95%, Tamanio: 1639.12KB -> 131.91KB, Duracion: 76.00ms
-2025/04/05 02:46:18 Mensaje de 464 bytes enviado a cola processed-images
-2025/04/05 02:46:18 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:46:18 Mensaje procesado correctamente
-2025/04/05 02:46:18 Mensaje recibido: 4100115 bytes
-2025/04/05 02:46:18 Mensaje recibido en ProcessMessage: 4100115 bytes
-2025/04/05 02:46:19 Mensaje en formato NestJS recibido
-2025/04/05 02:46:19 Procesando imagen: ID=img_1743839178752_1a6uvhsh, Archivo=3 megas.png
-2025/04/05 02:46:19 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:46:19 Imagen procesada: 3 megas.png - Reduccion: 94.33%, Tamanio: 3002.73KB -> 170.23KB, Duracion: 233.00ms
-2025/04/05 02:46:19 Mensaje de 466 bytes enviado a cola processed-images
-2025/04/05 02:46:19 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:46:19 Mensaje procesado correctamente
-2025/04/05 02:46:36 Mensaje recibido: 1223964 bytes
-2025/04/05 02:46:36 Mensaje recibido en ProcessMessage: 1223964 bytes
-2025/04/05 02:46:36 Mensaje en formato NestJS recibido
-2025/04/05 02:46:36 Procesando imagen: ID=img_1743839196415_6mh46qp3, Archivo=analisis-lego-2k-drive-3033272.webp
-2025/04/05 02:46:36 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/05 02:46:36 Error al procesar imagen: error al decodificar imagen: image: unknown format
-2025/04/05 02:46:36 Mensaje de 205 bytes enviado a cola processed-images
-2025/04/05 02:46:36 Respuesta enviada correctamente a cola processed-images
-2025/04/05 02:46:36 Error procesando mensaje: error al decodificar imagen: image: unknown format
+2025/04/11 21:40:55 Cargando configuraci├│n del sistema...
+2025/04/11 21:40:55 Archivo .env cargado correctamente desde: C:\Users\USER\Desktop\Proyecto principal\image-processing-microservice-go\.env
+2025/04/11 21:40:55 Modo de depuracion activado
+2025/04/11 21:40:55 Configuraci├│n cargada correctamente:
+2025/04/11 21:40:55 - RabbitMQ URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+2025/04/11 21:40:55 - Cola de entrada: images-to-process
+2025/04/11 21:40:55 - Cola de salida: processed-images
+2025/04/11 21:40:55 - Trabajadores m├íximos: 4
+2025/04/11 21:40:55 - Modo Debug: true
+{"level":"info","message":"Sistema de logs inicializado","timestamp":"2025-04-11T21:40:55-05:00"}
+{"component":"main","level":"info","message":"============= SERVICIO DE PROCESAMIENTO DE IMAGENES =============","timestamp":"2025-04-11T21:40:55-05:00"}
+{"component":"main","level":"info","message":"Iniciando servicio de procesamiento de imagenes (Go)","timestamp":"2025-04-11T21:40:55-05:00"}
+2025/04/11 21:40:55 PID 46320 guardado en processor.pid
+{"component":"main","level":"info","message":"Creando procesador de imagenes...","timestamp":"2025-04-11T21:40:55-05:00"}
+2025/04/11 21:40:55 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+2025/04/11 21:40:55 Todas las colas declaradas correctamente
+2025/04/11 21:40:55 Conexion establecida con RabbitMQ correctamente
+{"component":"main","level":"info","message":"Creando consumidor...","timestamp":"2025-04-11T21:40:55-05:00"}
+{"component":"main","level":"info","message":"Iniciando consumidor...","timestamp":"2025-04-11T21:40:55-05:00"}
+2025/04/11 21:40:55 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+2025/04/11 21:40:55 Todas las colas declaradas correctamente
+2025/04/11 21:40:55 Conexion establecida con RabbitMQ correctamente
+2025/04/11 21:40:55 Solicitando suscripcion a cola 'images-to-process', autoAck=false
+2025/04/11 21:40:55 Intentando Consume() en cola 'images-to-process'
+2025/04/11 21:40:55 Suscripcion exitosa a cola 'images-to-process'
+{"component":"rabbitmq-consumer","level":"info","message":"Consumidor iniciado","queue":"images-to-process","timestamp":"2025-04-11T21:40:55-05:00"}
+{"component":"main","level":"info","message":"Enviando mensaje de prueba...","timestamp":"2025-04-11T21:40:56-05:00"}
+2025/04/11 21:40:56 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+2025/04/11 21:40:57 Todas las colas declaradas correctamente
+2025/04/11 21:40:57 Conexion establecida con RabbitMQ correctamente
+2025/04/11 21:40:57 Mensaje de 184 bytes enviado a cola images-to-process
+{"component":"main","level":"info","message":"Mensaje de prueba enviado correctamente","timestamp":"2025-04-11T21:40:57-05:00"}
+2025/04/11 21:40:57 Mensaje recibido: 184 bytes
+2025/04/11 21:40:57 Mensaje recibido en ProcessMessage: 184 bytes
+2025/04/11 21:40:57 Mensaje en formato directo recibido
+2025/04/11 21:40:57 Procesando imagen: ID=test-123, Archivo=test.jpg
+2025/04/11 21:40:57 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
+2025/04/11 21:40:57 Imagen test.jpg procesada pero sin mejoras, usando original
+2025/04/11 21:40:57 Mensaje de 364 bytes enviado a cola processed-images
+2025/04/11 21:40:57 Respuesta enviada correctamente a cola processed-images
+2025/04/11 21:40:57 Mensaje procesado correctamente
+2025/04/11 21:40:57 Conexion con RabbitMQ cerrada correctamente
+{"component":"main","level":"info","message":"Servicio inicializado correctamente","timestamp":"2025-04-11T21:40:57-05:00"}
+{"component":"main","level":"info","message":"Esperando mensajes...","timestamp":"2025-04-11T21:40:57-05:00"}
+2025/04/11 21:46:12 Mensaje recibido: 1161382 bytes
+2025/04/11 21:46:12 Mensaje recibido en ProcessMessage: 1161382 bytes
+2025/04/11 21:46:12 Mensaje en formato NestJS recibido
+2025/04/11 21:46:12 Procesando imagen: ID=img_1744425972429_15e5ca73a7, Archivo=photo-1490237014491-822aee911b99.jpeg
+2025/04/11 21:46:12 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
+2025/04/11 21:46:13 Imagen procesada: photo-1490237014491-822aee911b99.jpeg - Reduccion: 67.67%, Tamanio: 850.30KB -> 274.91KB, Duracion: 222.00ms
+2025/04/11 21:46:13 Mensaje de 375857 bytes enviado a cola processed-images
+2025/04/11 21:46:13 Respuesta enviada correctamente a cola processed-images
+2025/04/11 21:46:13 Mensaje procesado correctamente
