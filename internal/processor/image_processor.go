@@ -1,6 +1,7 @@
 package processor
 
 import (
+	
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
@@ -360,8 +361,8 @@ func (p *ImageProcessor) getPresetFromOptions(options map[string]interface{}) co
 			preset.Format = config.FormatJPEG
 		case "png":
 			preset.Format = config.FormatPNG
-		case "webp":
-			preset.Format = config.FormatWEBP
+		// case "webp":
+		// 	preset.Format = config.FormatWEBP
 		case "gif":
 			preset.Format = config.FormatGIF
 		}
@@ -423,18 +424,34 @@ func (p *ImageProcessor) shouldProcessImage(imageData []byte, _ string, preset c
 // processImage procesa una imagen según el formato y preset
 func (p *ImageProcessor) processImage(imageData []byte, mimetype string, preset config.ImagePreset) ([]byte, map[string]interface{}, error) {
 	// Si se solicita WebP, usar JPEG como alternativa
-	if preset.Format == config.FormatWEBP {
-		log.Printf("Formato WebP solicitado pero no soportado, usando JPEG como alternativa")
-		preset.Format = config.FormatJPEG
-	}
+	// if preset.Format == config.FormatWEBP {
+	// 	log.Printf("Formato WebP solicitado pero no soportado, usando JPEG como alternativa")
+	// 	preset.Format = config.FormatJPEG
+	// }
+	if preset.Format != config.FormatJPEG && preset.Format != config.FormatPNG && preset.Format != config.FormatGIF {
+        log.Printf("Formato %s solicitado pero no soportado, usando JPEG como alternativa", preset.Format)
+        preset.Format = config.FormatJPEG
+    }
 
 	switch preset.Format {
+	// case config.FormatJPEG:
+	// 	return p.processToJPEG(imageData, preset)
+	// case config.FormatPNG:
+	// 	return p.processToPNG(imageData, preset)
+	// case config.FormatWEBP:
+	// 	return p.processToWEBP(imageData, preset)
+	// default:
+	// 	// Formato no soportado específicamente, usar JPEG
+	// 	return p.processToJPEG(imageData, preset)
+	// }
 	case config.FormatJPEG:
 		return p.processToJPEG(imageData, preset)
 	case config.FormatPNG:
 		return p.processToPNG(imageData, preset)
-	case config.FormatWEBP:
-		return p.processToWEBP(imageData, preset)
+	case config.FormatGIF:
+		// Implementar procesamiento GIF o usar fallback
+		log.Printf("Formato GIF solicitado pero no implementado, usando JPEG como alternativa")
+		return p.processToJPEG(imageData, preset)
 	default:
 		// Formato no soportado específicamente, usar JPEG
 		return p.processToJPEG(imageData, preset)
@@ -607,57 +624,57 @@ func (p *ImageProcessor) processToPNG(imageData []byte, preset config.ImagePrese
 
 // processToWEBP convierte la imagen a formato WebP
 // processToWEBP convierte la imagen a formato WebP usando kolesa-team/go-webp
-func (p *ImageProcessor) processToWEBP(imageData []byte, preset config.ImagePreset) ([]byte, map[string]interface{}, error) {
-    // Decodificar imagen
-    img, format, err := image.Decode(bytes.NewReader(imageData))
-    if err != nil {
-        return nil, nil, fmt.Errorf("error al decodificar imagen: %v", err)
-    }
+// func (p *ImageProcessor) processToWEBP(imageData []byte, preset config.ImagePreset) ([]byte, map[string]interface{}, error) {
+//     // Decodificar imagen
+//     img, format, err := image.Decode(bytes.NewReader(imageData))
+//     if err != nil {
+//         return nil, nil, fmt.Errorf("error al decodificar imagen: %v", err)
+//     }
 
-    // Obtener dimensiones originales
-    bounds := img.Bounds()
-    originalWidth := bounds.Dx()
-    originalHeight := bounds.Dy()
+//     // Obtener dimensiones originales
+//     bounds := img.Bounds()
+//     originalWidth := bounds.Dx()
+//     originalHeight := bounds.Dy()
 
-    // Redimensionar si es necesario
-    var resizedImg image.Image
-    if originalWidth > preset.MaxWidth || originalHeight > preset.MaxHeight {
-        if preset.PreserveAspectRatio {
-            // Mantener proporción de aspecto
-            resizedImg = imaging.Fit(img, preset.MaxWidth, preset.MaxHeight, imaging.Lanczos)
-        } else {
-            // Redimensionar sin mantener proporción
-            resizedImg = imaging.Resize(img, preset.MaxWidth, preset.MaxHeight, imaging.Lanczos)
-        }
-    } else {
-        resizedImg = img
-    }
+//     // Redimensionar si es necesario
+//     var resizedImg image.Image
+//     if originalWidth > preset.MaxWidth || originalHeight > preset.MaxHeight {
+//         if preset.PreserveAspectRatio {
+//             // Mantener proporción de aspecto
+//             resizedImg = imaging.Fit(img, preset.MaxWidth, preset.MaxHeight, imaging.Lanczos)
+//         } else {
+//             // Redimensionar sin mantener proporción
+//             resizedImg = imaging.Resize(img, preset.MaxWidth, preset.MaxHeight, imaging.Lanczos)
+//         }
+//     } else {
+//         resizedImg = img
+//     }
 
-    // Crear un buffer para la salida
-    buf := new(bytes.Buffer)
+//     // Crear un buffer para la salida
+//     buf := new(bytes.Buffer)
 
-    // Intentar codificar con configuración lossy (con pérdida)
-    // err = webp.Encode(buf, resizedImg, &webp.EncoderOptions{
-    //     Lossless: false,
-    //     Quality:  float32(preset.Quality),
-    // })
+//     // Intentar codificar con configuración lossy (con pérdida)
+//     // err = webp.Encode(buf, resizedImg, &webp.EncoderOptions{
+//     //     Lossless: false,
+//     //     Quality:  float32(preset.Quality),
+//     // })
 
-    // if err != nil {
-    //     return nil, nil, fmt.Errorf("error al codificar WebP: %v", err)
-    // }
+//     // if err != nil {
+//     //     return nil, nil, fmt.Errorf("error al codificar WebP: %v", err)
+//     // }
 
-    // Información del procesamiento
-    info := map[string]interface{}{
-        "processor":      "golang-webp",
-        "originalFormat": format,
-        "newFormat":      "webp",
-        "originalWidth":  originalWidth,
-        "originalHeight": originalHeight,
-        "newWidth":       resizedImg.Bounds().Dx(),
-        "newHeight":      resizedImg.Bounds().Dy(),
-        "quality":        preset.Quality,
-    }
+//     // Información del procesamiento
+//     info := map[string]interface{}{
+//         "processor":      "golang-webp",
+//         "originalFormat": format,
+//         "newFormat":      "webp",
+//         "originalWidth":  originalWidth,
+//         "originalHeight": originalHeight,
+//         "newWidth":       resizedImg.Bounds().Dx(),
+//         "newHeight":      resizedImg.Bounds().Dy(),
+//         "quality":        preset.Quality,
+//     }
 
-    return buf.Bytes(), info, nil
-}
+//     return buf.Bytes(), info, nil
+// }
 

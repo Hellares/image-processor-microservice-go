@@ -20,7 +20,7 @@ type ImageFormat string
 const (
 	FormatJPEG ImageFormat = "jpeg"
 	FormatPNG  ImageFormat = "png"
-	FormatWEBP ImageFormat = "webp"
+	// FormatWEBP ImageFormat = "webp"
 	FormatGIF  ImageFormat = "gif"
 )
 
@@ -251,28 +251,28 @@ func LoadConfig() {
 			MaxWidth:           1200,
 			MaxHeight:          1200,
 			Quality:            85,
-			Format:             FormatWEBP,
+			Format:             FormatJPEG,
 			PreserveAspectRatio: true,
 		},
 		"banner": {
 			MaxWidth:           1920,
 			MaxHeight:          1080,
 			Quality:            80,
-			Format:             FormatWEBP,
+			Format:             FormatJPEG,
 			PreserveAspectRatio: true,
 		},
 		"thumbnail": {
 			MaxWidth:           300,
 			MaxHeight:          300,
 			Quality:            75,
-			Format:             FormatWEBP,
+			Format:             FormatJPEG,
 			PreserveAspectRatio: true,
 		},
 		"default": {
 			MaxWidth:           1600,
 			MaxHeight:          1600,
 			Quality:            80,
-			Format:             FormatWEBP,
+			Format:             FormatJPEG,
 			PreserveAspectRatio: true,
 		},
 	}

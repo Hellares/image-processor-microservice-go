@@ -1,53 +1,51 @@
-2025/04/11 21:40:55 Cargando configuraci├│n del sistema...
-2025/04/11 21:40:55 Archivo .env cargado correctamente desde: C:\Users\USER\Desktop\Proyecto principal\image-processing-microservice-go\.env
-2025/04/11 21:40:55 Modo de depuracion activado
-2025/04/11 21:40:55 Configuraci├│n cargada correctamente:
-2025/04/11 21:40:55 - RabbitMQ URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/11 21:40:55 - Cola de entrada: images-to-process
-2025/04/11 21:40:55 - Cola de salida: processed-images
-2025/04/11 21:40:55 - Trabajadores m├íximos: 4
-2025/04/11 21:40:55 - Modo Debug: true
-{"level":"info","message":"Sistema de logs inicializado","timestamp":"2025-04-11T21:40:55-05:00"}
-{"component":"main","level":"info","message":"============= SERVICIO DE PROCESAMIENTO DE IMAGENES =============","timestamp":"2025-04-11T21:40:55-05:00"}
-{"component":"main","level":"info","message":"Iniciando servicio de procesamiento de imagenes (Go)","timestamp":"2025-04-11T21:40:55-05:00"}
-2025/04/11 21:40:55 PID 46320 guardado en processor.pid
-{"component":"main","level":"info","message":"Creando procesador de imagenes...","timestamp":"2025-04-11T21:40:55-05:00"}
-2025/04/11 21:40:55 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/11 21:40:55 Todas las colas declaradas correctamente
-2025/04/11 21:40:55 Conexion establecida con RabbitMQ correctamente
-{"component":"main","level":"info","message":"Creando consumidor...","timestamp":"2025-04-11T21:40:55-05:00"}
-{"component":"main","level":"info","message":"Iniciando consumidor...","timestamp":"2025-04-11T21:40:55-05:00"}
-2025/04/11 21:40:55 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/11 21:40:55 Todas las colas declaradas correctamente
-2025/04/11 21:40:55 Conexion establecida con RabbitMQ correctamente
-2025/04/11 21:40:55 Solicitando suscripcion a cola 'images-to-process', autoAck=false
-2025/04/11 21:40:55 Intentando Consume() en cola 'images-to-process'
-2025/04/11 21:40:55 Suscripcion exitosa a cola 'images-to-process'
-{"component":"rabbitmq-consumer","level":"info","message":"Consumidor iniciado","queue":"images-to-process","timestamp":"2025-04-11T21:40:55-05:00"}
-{"component":"main","level":"info","message":"Enviando mensaje de prueba...","timestamp":"2025-04-11T21:40:56-05:00"}
-2025/04/11 21:40:56 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/11 21:40:57 Todas las colas declaradas correctamente
-2025/04/11 21:40:57 Conexion establecida con RabbitMQ correctamente
-2025/04/11 21:40:57 Mensaje de 184 bytes enviado a cola images-to-process
-{"component":"main","level":"info","message":"Mensaje de prueba enviado correctamente","timestamp":"2025-04-11T21:40:57-05:00"}
-2025/04/11 21:40:57 Mensaje recibido: 184 bytes
-2025/04/11 21:40:57 Mensaje recibido en ProcessMessage: 184 bytes
-2025/04/11 21:40:57 Mensaje en formato directo recibido
-2025/04/11 21:40:57 Procesando imagen: ID=test-123, Archivo=test.jpg
-2025/04/11 21:40:57 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/11 21:40:57 Imagen test.jpg procesada pero sin mejoras, usando original
-2025/04/11 21:40:57 Mensaje de 364 bytes enviado a cola processed-images
-2025/04/11 21:40:57 Respuesta enviada correctamente a cola processed-images
-2025/04/11 21:40:57 Mensaje procesado correctamente
-2025/04/11 21:40:57 Conexion con RabbitMQ cerrada correctamente
-{"component":"main","level":"info","message":"Servicio inicializado correctamente","timestamp":"2025-04-11T21:40:57-05:00"}
-{"component":"main","level":"info","message":"Esperando mensajes...","timestamp":"2025-04-11T21:40:57-05:00"}
-2025/04/11 21:46:12 Mensaje recibido: 1161382 bytes
-2025/04/11 21:46:12 Mensaje recibido en ProcessMessage: 1161382 bytes
-2025/04/11 21:46:12 Mensaje en formato NestJS recibido
-2025/04/11 21:46:12 Procesando imagen: ID=img_1744425972429_15e5ca73a7, Archivo=photo-1490237014491-822aee911b99.jpeg
-2025/04/11 21:46:12 Formato WebP solicitado pero no soportado, usando JPEG como alternativa
-2025/04/11 21:46:13 Imagen procesada: photo-1490237014491-822aee911b99.jpeg - Reduccion: 67.67%, Tamanio: 850.30KB -> 274.91KB, Duracion: 222.00ms
-2025/04/11 21:46:13 Mensaje de 375857 bytes enviado a cola processed-images
-2025/04/11 21:46:13 Respuesta enviada correctamente a cola processed-images
-2025/04/11 21:46:13 Mensaje procesado correctamente
+2025/04/11 22:39:47 Cargando configuraci├│n del sistema...
+2025/04/11 22:39:47 Archivo .env cargado correctamente desde: C:\Users\USER\Desktop\Proyecto principal\image-processing-microservice-go\.env
+2025/04/11 22:39:47 Modo de depuracion activado
+2025/04/11 22:39:47 Configuraci├│n cargada correctamente:
+2025/04/11 22:39:47 - RabbitMQ URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+2025/04/11 22:39:47 - Cola de entrada: images-to-process
+2025/04/11 22:39:47 - Cola de salida: processed-images
+2025/04/11 22:39:47 - Trabajadores m├íximos: 4
+2025/04/11 22:39:47 - Modo Debug: true
+{"level":"info","message":"Sistema de logs inicializado","timestamp":"2025-04-11T22:39:47-05:00"}
+{"component":"main","level":"info","message":"============= SERVICIO DE PROCESAMIENTO DE IMAGENES =============","timestamp":"2025-04-11T22:39:47-05:00"}
+{"component":"main","level":"info","message":"Iniciando servicio de procesamiento de imagenes (Go)","timestamp":"2025-04-11T22:39:47-05:00"}
+2025/04/11 22:39:47 PID 25380 guardado en processor.pid
+{"component":"main","level":"info","message":"Creando procesador de imagenes...","timestamp":"2025-04-11T22:39:47-05:00"}
+2025/04/11 22:39:47 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+2025/04/11 22:39:47 Todas las colas declaradas correctamente
+2025/04/11 22:39:47 Conexion establecida con RabbitMQ correctamente
+{"component":"main","level":"info","message":"Creando consumidor...","timestamp":"2025-04-11T22:39:47-05:00"}
+{"component":"main","level":"info","message":"Iniciando consumidor...","timestamp":"2025-04-11T22:39:47-05:00"}
+2025/04/11 22:39:47 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+2025/04/11 22:39:48 Todas las colas declaradas correctamente
+2025/04/11 22:39:48 Conexion establecida con RabbitMQ correctamente
+2025/04/11 22:39:48 Solicitando suscripcion a cola 'images-to-process', autoAck=false
+2025/04/11 22:39:48 Intentando Consume() en cola 'images-to-process'
+2025/04/11 22:39:48 Suscripcion exitosa a cola 'images-to-process'
+{"component":"rabbitmq-consumer","level":"info","message":"Consumidor iniciado","queue":"images-to-process","timestamp":"2025-04-11T22:39:48-05:00"}
+{"component":"main","level":"info","message":"Enviando mensaje de prueba...","timestamp":"2025-04-11T22:39:49-05:00"}
+2025/04/11 22:39:49 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+2025/04/11 22:39:49 Todas las colas declaradas correctamente
+2025/04/11 22:39:49 Conexion establecida con RabbitMQ correctamente
+2025/04/11 22:39:49 Mensaje de 184 bytes enviado a cola images-to-process
+{"component":"main","level":"info","message":"Mensaje de prueba enviado correctamente","timestamp":"2025-04-11T22:39:49-05:00"}
+2025/04/11 22:39:49 Mensaje recibido: 184 bytes
+2025/04/11 22:39:49 Mensaje recibido en ProcessMessage: 184 bytes
+2025/04/11 22:39:49 Mensaje en formato directo recibido
+2025/04/11 22:39:49 Procesando imagen: ID=test-123, Archivo=test.jpg
+2025/04/11 22:39:49 Imagen test.jpg procesada pero sin mejoras, usando original
+2025/04/11 22:39:49 Mensaje de 364 bytes enviado a cola processed-images
+2025/04/11 22:39:49 Respuesta enviada correctamente a cola processed-images
+2025/04/11 22:39:49 Mensaje procesado correctamente
+2025/04/11 22:39:49 Conexion con RabbitMQ cerrada correctamente
+{"component":"main","level":"info","message":"Servicio inicializado correctamente","timestamp":"2025-04-11T22:39:49-05:00"}
+{"component":"main","level":"info","message":"Esperando mensajes...","timestamp":"2025-04-11T22:39:49-05:00"}
+2025/04/11 22:39:57 Mensaje recibido: 1161382 bytes
+2025/04/11 22:39:57 Mensaje recibido en ProcessMessage: 1161382 bytes
+2025/04/11 22:39:57 Mensaje en formato NestJS recibido
+2025/04/11 22:39:57 Procesando imagen: ID=img_1744429197354_fcb2fd6b7b, Archivo=photo-1490237014491-822aee911b99.jpeg
+2025/04/11 22:39:57 Imagen procesada: photo-1490237014491-822aee911b99.jpeg - Reduccion: 67.67%, Tamanio: 850.30KB -> 274.91KB, Duracion: 225.00ms
+2025/04/11 22:39:58 Mensaje de 375857 bytes enviado a cola processed-images
+2025/04/11 22:39:58 Respuesta enviada correctamente a cola processed-images
+2025/04/11 22:39:58 Mensaje procesado correctamente
