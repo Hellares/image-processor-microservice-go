@@ -11,13 +11,17 @@ import (
 	"syscall"
 	"time"
 
+
 	"image-processing-microservice-go/internal/config"
 	"image-processing-microservice-go/internal/logger"
 	"image-processing-microservice-go/internal/processor"
 	"image-processing-microservice-go/internal/rabbitmq"
+	processor2 "image-processing-microservice-go/metrics"
+
 )
 
 func main() {
+	processor2.InitMetricsServer("8080")
 	// Definir flags de línea de comandos
 	envFile := flag.String("env", "", "Ruta al archivo .env (opcional)")
 	debugMode := flag.Bool("debug", false, "Activar modo debug")
@@ -77,6 +81,8 @@ func main() {
 		log.Fatalf("Error al iniciar consumidor: %v", err)
 	}
 
+
+
 	// Enviar mensaje de prueba en modo debug
 	if config.Config.Debug {
 		time.Sleep(1 * time.Second) // Dar tiempo a que el consumidor inicie
@@ -101,6 +107,8 @@ func main() {
 	log.Println("Servicio inicializado correctamente")
 	log.Println("Esperando mensajes...")
 
+	
+
 	// Manejar señales de terminación
 	stopChan := make(chan os.Signal, 1)
 	signal.Notify(stopChan, syscall.SIGINT, syscall.SIGTERM)
@@ -108,6 +116,11 @@ func main() {
 	// Esperar señal
 	<-stopChan
 	log.Println("Señal de terminacion recibida. Iniciando apagado ordenado...")
+
+
+	// Detener procesador de imágenes
+	log.Println("Deteniendo procesador de imágenes...")
+	imageProcessor.Stop()
 
 	// Detener consumidor
 	err = consumer.Stop()

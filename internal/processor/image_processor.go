@@ -1,7 +1,7 @@
 package processor
 
 import (
-	
+	"context"
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
@@ -15,10 +15,13 @@ import (
 	"time"
 
 	"image-processing-microservice-go/internal/config"
+	"image-processing-microservice-go/internal/logger"
 	"image-processing-microservice-go/internal/rabbitmq"
+	processor2 "image-processing-microservice-go/metrics"
 
 	"github.com/disintegration/imaging"
 	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/sirupsen/logrus"
 )
 
 // ProcessorType representa los tipos de procesadores de imágenes
@@ -35,26 +38,32 @@ const (
 // ImageProcessor es el procesador principal de imágenes
 type ImageProcessor struct {
 	connection *rabbitmq.RabbitMQConnection
+	workerPool *WorkerPool
+	stopChan   chan struct{}
+	ctx        context.Context
+	cancel     context.CancelFunc
+	log        *logrus.Entry
 }
 
 // Message representa la estructura de los mensajes de entrada
 type Message struct {
-	ID        string      `json:"id"`
-	Filename  string      `json:"filename"`
-	Data      interface{} `json:"data,omitempty"`
-	Buffer    interface{} `json:"buffer,omitempty"`
-	Content   interface{} `json:"content,omitempty"`
-	CompanyID string      `json:"companyId,omitempty"`
-	UserID    string      `json:"userId,omitempty"`
-	Module    string      `json:"module,omitempty"`
-	Preset    string      `json:"preset,omitempty"`
-	MaxWidth  int         `json:"maxWidth,omitempty"`
-	MaxHeight int         `json:"maxHeight,omitempty"`
-	Quality   int         `json:"quality,omitempty"`
-	Format    string      `json:"format,omitempty"`
-	Mimetype  string      `json:"mimetype,omitempty"`
-	Type      string      `json:"type,omitempty"`
-	Command   string      `json:"command,omitempty"`
+	ID          string      `json:"id"`
+	Filename    string      `json:"filename"`
+	Data        interface{} `json:"data,omitempty"`
+	Buffer      interface{} `json:"buffer,omitempty"`
+	Content     interface{} `json:"content,omitempty"`
+	CompanyID   string      `json:"companyId,omitempty"`
+	UserID      string      `json:"userId,omitempty"`
+	Module      string      `json:"module,omitempty"`
+	Preset      string      `json:"preset,omitempty"`
+	MaxWidth    int         `json:"maxWidth,omitempty"`
+	MaxHeight   int         `json:"maxHeight,omitempty"`
+	Quality     int         `json:"quality,omitempty"`
+	Format      string      `json:"format,omitempty"`
+	Mimetype    string      `json:"mimetype,omitempty"`
+	Type        string      `json:"type,omitempty"`
+	Command     string      `json:"command,omitempty"`
+	ReplyQueue  string      `json:"replyQueue,omitempty"`  // Nueva propiedad para respuestas
 }
 
 // Response representa la estructura de las respuestas
@@ -86,14 +95,314 @@ func NewImageProcessor(connection *rabbitmq.RabbitMQConnection) *ImageProcessor 
 		}
 	}
 
-	return &ImageProcessor{
+	ctx, cancel := context.WithCancel(context.Background())
+	
+	processor := &ImageProcessor{
 		connection: connection,
+		workerPool: NewWorkerPool(),
+		stopChan:   make(chan struct{}),
+		ctx:        ctx,
+		cancel:     cancel,
+		log:        logger.Log.WithField("component", "image-processor"),
 	}
+	
+	// Registrar el procesador en la instancia global
+	SetImageProcessor(processor)
+	
+	// Iniciar worker pool
+	processor.workerPool.Start()
+	
+	// Iniciar procesamiento de resultados
+	go processor.processResults()
+	
+	return processor
+}
+
+// min devuelve el mínimo de dos enteros
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+// Stop detiene el procesador y sus componentes
+func (p *ImageProcessor) Stop() {
+	p.log.Info("Deteniendo procesador de imágenes")
+	p.cancel()
+	close(p.stopChan)
+	p.workerPool.Stop()
+	p.log.Info("Procesador de imágenes detenido")
+}
+
+// processResults procesa los resultados del worker pool
+// func (p *ImageProcessor) processResults() {
+// 	p.log.Info("Iniciando procesamiento de resultados")
+	
+// 	for {
+// 		select {
+// 		case <-p.stopChan:
+// 			p.log.Info("Deteniendo procesamiento de resultados")
+// 			return
+			
+// 		case result, ok := <-p.workerPool.GetResults():
+// 			if !ok {
+// 				// Canal cerrado
+// 				p.log.Info("Canal de resultados cerrado")
+// 				return
+// 			}
+			
+// 			// Crear respuesta basada en el resultado
+// 			response := Response{
+// 				ID:            result.MessageID,
+// 				Processed:     true,
+// 				Filename:      result.Filename,
+// 				CompanyID:     result.CompanyID,
+// 				UserID:        result.UserID,
+// 				Module:        result.Module,
+// 				OriginalSize:  result.OriginalSize,
+// 				ProcessedSize: result.ProcessedSize,
+// 				Success:       result.Error == nil,
+// 				Info:          result.Info,
+// 				Duration:      fmt.Sprintf("%.2fms", float64(result.Duration.Milliseconds())),
+// 			}
+			 
+// 			// Manejar posibles errores
+// 			if result.Error != nil {
+// 				response.Error = result.Error.Error()
+// 				p.log.WithField("message_id", result.MessageID).
+// 					WithError(result.Error).
+// 					Error("Error procesando imagen")
+// 			} else {
+// 				// Calcular porcentaje de reducción
+// 				if result.OriginalSize > 0 && result.ProcessedSize > 0 {
+// 					reductionPercent := float64(result.OriginalSize-result.ProcessedSize) / float64(result.OriginalSize) * 100
+// 					response.Reduction = fmt.Sprintf("%.2f%%", reductionPercent)
+					
+// 					p.log.WithField("message_id", result.MessageID).
+// 						Infof("Imagen procesada: %s - Reducción: %.2f%%, Tamaño: %.2fKB -> %.2fKB, Duración: %.2fms",
+// 							result.Filename, reductionPercent, 
+// 							float64(result.OriginalSize)/1024, 
+// 							float64(result.ProcessedSize)/1024, 
+// 							float64(result.Duration.Milliseconds()))
+// 				}
+				
+// 				// Añadir datos procesados si existen
+// 				if len(result.ProcessedData) > 0 {
+// 					response.ProcessedData = base64.StdEncoding.EncodeToString(result.ProcessedData)
+// 				}
+// 			}
+			
+// 			// Usar el correlationID o el messageID como fallback
+// 			correlationID := result.CorrelationID
+// 			if correlationID == "" {
+// 				correlationID = result.MessageID
+// 				p.log.WithField("message_id", result.MessageID).
+// 					Warn("Usando MessageID como CorrelationID para respuesta")
+// 			}
+			
+// 			// Enviar respuesta a RabbitMQ
+// 			if correlationID != "" {
+// 				// Si hay una cola de respuesta específica, usarla
+// 				queueOut := config.Config.QueueOut
+// 				if result.ReplyQueue != "" {
+// 					queueOut = result.ReplyQueue
+// 					p.log.WithFields(logrus.Fields{
+// 						"message_id": result.MessageID,
+// 						"reply_queue": result.ReplyQueue,
+// 					}).Debug("Usando cola de respuesta específica")
+// 				}
+				
+// 				err := p.publishResponse(response, correlationID, queueOut)
+// 				if err != nil {
+// 					p.log.WithError(err).
+// 						WithField("message_id", result.MessageID).
+// 						Error("Error al publicar respuesta en RabbitMQ")
+// 				} else {
+// 					p.log.WithFields(logrus.Fields{
+// 						"message_id": result.MessageID,
+// 						"queue": queueOut,
+// 					}).Debug("Respuesta enviada correctamente")
+// 				}
+// 			} else {
+// 				p.log.WithField("message_id", result.MessageID).
+// 					Error("No se puede enviar respuesta, no hay ID para correlación")
+// 			}
+// 		}
+// 	}
+// }
+
+func (p *ImageProcessor) processResults() {
+	p.log.Info("Iniciando procesamiento de resultados")
+	
+	for {
+		select {
+		case <-p.stopChan:
+			p.log.Info("Deteniendo procesamiento de resultados")
+			return
+			
+		case result, ok := <-p.workerPool.GetResults():
+			if !ok {
+				// Canal cerrado
+				p.log.Info("Canal de resultados cerrado")
+				return
+			}
+			
+			// Crear respuesta basada en el resultado
+			response := Response{
+				ID:            result.MessageID,
+				Processed:     true,
+				Filename:      result.Filename,
+				CompanyID:     result.CompanyID,
+				UserID:        result.UserID,
+				Module:        result.Module,
+				OriginalSize:  result.OriginalSize,
+				ProcessedSize: result.ProcessedSize,
+				Success:       result.Error == nil,
+				Info:          result.Info,
+				Duration:      fmt.Sprintf("%.2fms", float64(result.Duration.Milliseconds())),
+			}
+			
+			// Determinar estado para métricas
+			status := "success"
+			format := "unknown"
+			if result.Info != nil {
+				if fmt, ok := result.Info["newFormat"].(string); ok {
+					format = fmt
+				}
+			}
+			
+			// Manejar posibles errores
+			if result.Error != nil {
+				status = "error"
+				response.Error = result.Error.Error()
+				p.log.WithField("message_id", result.MessageID).
+					WithError(result.Error).
+					Error("Error procesando imagen")
+					
+				// Registrar error en Prometheus
+				processor2.ImagesProcessed.WithLabelValues(status, format).Inc()
+			} else {
+				// Calcular porcentaje de reducción
+				if result.OriginalSize > 0 && result.ProcessedSize > 0 {
+					reductionPercent := float64(result.OriginalSize-result.ProcessedSize) / float64(result.OriginalSize) * 100
+					response.Reduction = fmt.Sprintf("%.2f%%", reductionPercent)
+					
+					p.log.WithField("message_id", result.MessageID).
+						Infof("Imagen procesada: %s - Reducción: %.2f%%, Tamaño: %.2fKB -> %.2fKB, Duración: %.2fms",
+							result.Filename, reductionPercent, 
+							float64(result.OriginalSize)/1024, 
+							float64(result.ProcessedSize)/1024, 
+							float64(result.Duration.Milliseconds()))
+							
+					// Registrar métricas en Prometheus
+					processor2.ImagesProcessed.WithLabelValues(status, format).Inc()
+					processor2.ProcessingDuration.WithLabelValues(format).Observe(float64(result.Duration.Seconds()))
+					processor2.SizeReduction.WithLabelValues(format).Observe(reductionPercent)
+				} else {
+					// Registrar procesamiento sin reducción
+					processor2.ImagesProcessed.WithLabelValues(status, format).Inc()
+					processor2.ProcessingDuration.WithLabelValues(format).Observe(float64(result.Duration.Seconds()))
+				}
+				
+				// Añadir datos procesados si existen
+				if len(result.ProcessedData) > 0 {
+					response.ProcessedData = base64.StdEncoding.EncodeToString(result.ProcessedData)
+				}
+			}
+			
+			// Usar el correlationID o el messageID como fallback
+			correlationID := result.CorrelationID
+			if correlationID == "" {
+				correlationID = result.MessageID
+				p.log.WithField("message_id", result.MessageID).
+					Warn("Usando MessageID como CorrelationID para respuesta")
+			}
+			
+			// Enviar respuesta a RabbitMQ
+			if correlationID != "" {
+				// Si hay una cola de respuesta específica, usarla
+				queueOut := config.Config.QueueOut
+				if result.ReplyQueue != "" {
+					queueOut = result.ReplyQueue
+					p.log.WithFields(logrus.Fields{
+						"message_id": result.MessageID,
+						"reply_queue": result.ReplyQueue,
+					}).Debug("Usando cola de respuesta específica")
+				}
+				
+				err := p.publishResponse(response, correlationID, queueOut)
+				if err != nil {
+					p.log.WithError(err).
+						WithField("message_id", result.MessageID).
+						Error("Error al publicar respuesta en RabbitMQ")
+				} else {
+					p.log.WithFields(logrus.Fields{
+						"message_id": result.MessageID,
+						"queue": queueOut,
+					}).Debug("Respuesta enviada correctamente")
+				}
+			} else {
+				p.log.WithField("message_id", result.MessageID).
+					Error("No se puede enviar respuesta, no hay ID para correlación")
+			}
+		}
+	}
+}
+
+// publishResponse publica la respuesta en RabbitMQ
+func (p *ImageProcessor) publishResponse(response Response, correlationID string, queueOut string) error {
+	// Si la cola de salida no está especificada, usar la predeterminada
+	if queueOut == "" {
+		queueOut = config.Config.QueueOut
+	}
+	
+	// Convertir a JSON
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		return fmt.Errorf("error al serializar respuesta: %v", err)
+	}
+
+	// Verificar que la conexión esté disponible
+	if p.connection == nil || !p.connection.IsConnected() {
+		p.log.Info("Conexión no disponible, intentando reconectar para enviar respuesta")
+		p.connection = rabbitmq.NewRabbitMQConnection(config.Config.GetRabbitMQURLs()[0])
+		err = p.connection.Connect()
+		if err != nil {
+			return fmt.Errorf("error al reconectar para enviar respuesta: %v", err)
+		}
+	}
+
+	// Enviar respuesta
+	err = p.connection.PublishMessage(
+		queueOut,
+		responseJSON,
+		correlationID,
+	)
+
+	if err != nil {
+		return fmt.Errorf("error al publicar mensaje: %v", err)
+	}
+	
+	p.log.WithFields(logrus.Fields{
+		"queue": queueOut,
+		"size": len(responseJSON),
+		"correlation_id": correlationID,
+	}).Debug("Mensaje publicado en cola de respuestas")
+	
+	return nil
 }
 
 // ProcessMessage procesa un mensaje de RabbitMQ
 func (p *ImageProcessor) ProcessMessage(body []byte, delivery amqp.Delivery) error {
-	log.Printf("Mensaje recibido en ProcessMessage: %d bytes", len(body))
+	// Registrar información detallada sobre el mensaje recibido
+	p.log.WithFields(logrus.Fields{
+		"msg_size": len(body),
+		"correlation_id": delivery.CorrelationId,
+		"reply_to": delivery.ReplyTo,
+		"message_id": delivery.MessageId,
+	}).Info("Mensaje recibido para procesamiento")
+	
 	startTime := time.Now()
 
 	// Intentar parsear como formato NestJS primero
@@ -106,12 +415,10 @@ func (p *ImageProcessor) ProcessMessage(body []byte, delivery amqp.Delivery) err
 	err := json.Unmarshal(body, &nestMessage)
 
 	if err == nil && nestMessage.Pattern == "images-to-process" && len(nestMessage.Data) > 0 {
-		// Es un mensaje en formato NestJS
-		log.Println("Mensaje en formato NestJS recibido")
+		p.log.Debug("Mensaje en formato NestJS recibido")
 		messageData = nestMessage.Data
 	} else {
-		// Es un mensaje directo
-		log.Println("Mensaje en formato directo recibido")
+		p.log.Debug("Mensaje en formato directo recibido")
 		messageData = body
 	}
 
@@ -119,35 +426,45 @@ func (p *ImageProcessor) ProcessMessage(body []byte, delivery amqp.Delivery) err
 	var message Message
 	err = json.Unmarshal(messageData, &message)
 	if err != nil {
-		log.Printf("Error al decodificar mensaje JSON: %v", err)
-		log.Printf("Mensaje que causó el error: %s", string(messageData[:min(200, len(messageData))]))
+		p.log.WithError(err).
+			WithField("data_preview", string(messageData[:min(200, len(messageData))])).
+			Error("Error al decodificar mensaje JSON")
 		return err
 	}
 
 	// Verificar si es un mensaje de limpieza
 	if message.Command == "cleanup" {
-		log.Println("Recibido mensaje de limpieza, ignorando procesamiento de imagen")
+		p.log.Info("Recibido mensaje de limpieza, ignorando procesamiento")
 		return nil
 	}
 
 	// Extraer información del mensaje
 	messageID := message.ID
 	if messageID == "" {
-		messageID = "unknown"
+		messageID = fmt.Sprintf("unknown-%d", time.Now().Unix())
 	}
 
 	filename := message.Filename
 	if filename == "" {
-		filename = "image.jpg"
+		filename = fmt.Sprintf("image-%d.jpg", time.Now().Unix())
 	}
-
-	log.Printf("Procesando imagen: ID=%s, Archivo=%s", messageID, filename)
 
 	// Obtener datos de la imagen
 	imageData, err := p.extractImageData(message)
 	if err != nil {
-		log.Printf("Error al extraer datos de imagen: %v", err)
-		p.sendErrorResponse(messageID, filename, fmt.Sprintf("Error al extraer datos de imagen: %v", err), delivery)
+		p.log.WithError(err).
+			WithField("message_id", messageID).
+			Error("Error al extraer datos de imagen")
+		
+		// Determinar el correlationID a usar
+		correlationID := delivery.CorrelationId
+		if correlationID == "" {
+			correlationID = messageID
+			p.log.WithField("message_id", messageID).
+				Warn("CorrelationID no disponible, usando MessageID para respuesta de error")
+		}
+		
+		p.sendErrorResponse(messageID, filename, fmt.Sprintf("Error al extraer datos de imagen: %v", err), correlationID)
 		return err
 	}
 
@@ -193,12 +510,24 @@ func (p *ImageProcessor) ProcessMessage(body []byte, delivery amqp.Delivery) err
 		mimetype = p.guessMimetype(filename)
 	}
 
-	// Determinar si es necesario procesar la imagen
-	if !p.shouldProcessImage(imageData, filename, preset) {
-		log.Printf("Imagen %s no requiere procesamiento, enviando sin cambios", filename)
+	// Verificar si la imagen necesita procesamiento
+	needsProcessing := p.shouldProcessImage(imageData, filename, preset)
+	
+	// Determinar el correlationID a usar
+	correlationID := delivery.CorrelationId
+	if correlationID == "" {
+		correlationID = messageID
+		p.log.WithField("message_id", messageID).
+			Warn("CorrelationID no disponible en el mensaje, usando MessageID como alternativa")
+	}
+	
+	// Si la imagen no necesita procesamiento, podemos responder directamente
+	if !needsProcessing {
+		p.log.WithField("message_id", messageID).
+			Info("Imagen no requiere procesamiento, respondiendo directamente")
+			
 		processingTime := time.Since(startTime).Milliseconds()
-
-		// Crear respuesta con la imagen original
+		
 		response := Response{
 			ID:            messageID,
 			Processed:     false,
@@ -216,80 +545,63 @@ func (p *ImageProcessor) ProcessMessage(body []byte, delivery amqp.Delivery) err
 			Duration: fmt.Sprintf("%.2fms", float64(processingTime)),
 			Success:  true,
 		}
-
-		// Enviar respuesta
-		p.sendResponse(response, delivery)
-		return nil
-	}
-
-	// Procesar imagen
-	processedData, info, err := p.processImage(imageData, mimetype, preset)
-	if err != nil {
-		log.Printf("Error al procesar imagen: %v", err)
-		p.sendErrorResponse(messageID, filename, fmt.Sprintf("Error al procesar imagen: %v", err), delivery)
-		return err
-	}
-
-	// Calcular estadísticas
-	originalSize := len(imageData)
-	processedSize := len(processedData)
-	var reductionPercent float64
-	if originalSize > 0 {
-		reductionPercent = float64(originalSize-processedSize) / float64(originalSize) * 100
-	}
-
-	// Si la imagen procesada es más grande o igual que la original, usar la original
-	if processedSize >= originalSize {
-		log.Printf("Imagen %s procesada pero sin mejoras, usando original", filename)
-		processingTime := time.Since(startTime).Milliseconds()
-
-		response := Response{
-			ID:            messageID,
-			Processed:     true,
-			Filename:      filename,
-			CompanyID:     companyID,
-			UserID:        userID,
-			Module:        module,
-			OriginalSize:  originalSize,
-			ProcessedSize: originalSize,
-			Reduction:     "0%",
-			Info:          info,
-			Duration:      fmt.Sprintf("%.2fms", float64(processingTime)),
-			Success:       true,
+		
+		// Determinar la cola de respuesta
+		queueOut := config.Config.QueueOut
+		if message.ReplyQueue != "" {
+			queueOut = message.ReplyQueue
+		} else if delivery.ReplyTo != "" {
+			queueOut = delivery.ReplyTo
 		}
-
-		p.sendResponse(response, delivery)
+		
+		// Usar solo el correlation ID para responder
+		err = p.publishResponse(response, correlationID, queueOut)
+		if err != nil {
+			p.log.WithError(err).Error("Error al publicar respuesta directa")
+		}
 		return nil
 	}
-
-	// Generar respuesta con la imagen procesada
-	processingTime := time.Since(startTime).Milliseconds()
-
-	response := Response{
-		ID:            messageID,
-		Processed:     true,
+	
+	// Crear trabajo y enviarlo al worker pool
+	job := ImageJob{
+		MessageID:     messageID,
+		CorrelationID: correlationID,
 		Filename:      filename,
+		ImageData:     imageData,
+		Mimetype:      mimetype,
+		Preset:        preset,
 		CompanyID:     companyID,
 		UserID:        userID,
 		Module:        module,
-		OriginalSize:  originalSize,
-		ProcessedSize: processedSize,
-		Reduction:     fmt.Sprintf("%.2f%%", reductionPercent),
-		Info:          info,
-		Duration:      fmt.Sprintf("%.2fms", float64(processingTime)),
-		Success:       true,
+		OriginalSize:  len(imageData),
+		ReplyQueue:    message.ReplyQueue,
 	}
-
-	log.Printf("Imagen procesada: %s - Reduccion: %.2f%%, Tamanio: %.2fKB -> %.2fKB, Duracion: %.2fms",
-		filename, reductionPercent, float64(originalSize)/1024, float64(processedSize)/1024, float64(processingTime))
-
-		if len(processedData) > 0 {
-			// Incluir los datos procesados en la respuesta
-			response.ProcessedData = base64.StdEncoding.EncodeToString(processedData)
-		}
-	// Enviar respuesta
-	p.sendResponse(response, delivery)
+	
+	// Si hay una cola de respuesta en el delivery, usarla
+	if delivery.ReplyTo != "" && job.ReplyQueue == "" {
+		job.ReplyQueue = delivery.ReplyTo
+	}
+	
+	// Encolar el trabajo
+	p.log.WithFields(logrus.Fields{
+		"message_id": messageID,
+		"correlation_id": correlationID,
+	}).Info("Encolando trabajo para procesamiento")
+		
+	err = p.workerPool.EnqueueJob(job)
+	if err != nil {
+		p.log.WithError(err).
+			WithField("message_id", messageID).
+			Error("Error al encolar trabajo")
+		p.sendErrorResponse(messageID, filename, fmt.Sprintf("Error al encolar trabajo: %v", err), correlationID)
+		return err
+	}
+	
+	p.log.WithField("message_id", messageID).
+		Debug("Trabajo encolado correctamente")
+	
 	return nil
+
 }
 
 // extractImageData extrae los datos de imagen del mensaje
@@ -361,8 +673,6 @@ func (p *ImageProcessor) getPresetFromOptions(options map[string]interface{}) co
 			preset.Format = config.FormatJPEG
 		case "png":
 			preset.Format = config.FormatPNG
-		// case "webp":
-		// 	preset.Format = config.FormatWEBP
 		case "gif":
 			preset.Format = config.FormatGIF
 		}
@@ -423,38 +733,70 @@ func (p *ImageProcessor) shouldProcessImage(imageData []byte, _ string, preset c
 
 // processImage procesa una imagen según el formato y preset
 func (p *ImageProcessor) processImage(imageData []byte, mimetype string, preset config.ImagePreset) ([]byte, map[string]interface{}, error) {
-	// Si se solicita WebP, usar JPEG como alternativa
-	// if preset.Format == config.FormatWEBP {
-	// 	log.Printf("Formato WebP solicitado pero no soportado, usando JPEG como alternativa")
-	// 	preset.Format = config.FormatJPEG
-	// }
+	// Si el formato solicitado no es soportado, usar JPEG como alternativa
 	if preset.Format != config.FormatJPEG && preset.Format != config.FormatPNG && preset.Format != config.FormatGIF {
-        log.Printf("Formato %s solicitado pero no soportado, usando JPEG como alternativa", preset.Format)
-        preset.Format = config.FormatJPEG
-    }
+		p.log.Warnf("Formato %s solicitado pero no soportado, usando JPEG como alternativa", preset.Format)
+		preset.Format = config.FormatJPEG
+	}
 
 	switch preset.Format {
-	// case config.FormatJPEG:
-	// 	return p.processToJPEG(imageData, preset)
-	// case config.FormatPNG:
-	// 	return p.processToPNG(imageData, preset)
-	// case config.FormatWEBP:
-	// 	return p.processToWEBP(imageData, preset)
-	// default:
-	// 	// Formato no soportado específicamente, usar JPEG
-	// 	return p.processToJPEG(imageData, preset)
-	// }
 	case config.FormatJPEG:
 		return p.processToJPEG(imageData, preset)
 	case config.FormatPNG:
 		return p.processToPNG(imageData, preset)
 	case config.FormatGIF:
 		// Implementar procesamiento GIF o usar fallback
-		log.Printf("Formato GIF solicitado pero no implementado, usando JPEG como alternativa")
+		p.log.Warn("Formato GIF solicitado pero no implementado, usando JPEG como alternativa")
 		return p.processToJPEG(imageData, preset)
 	default:
 		// Formato no soportado específicamente, usar JPEG
 		return p.processToJPEG(imageData, preset)
+	}
+}
+
+// ProcessImageWithCtx versión con soporte de contexto para cancelación
+// Esta es la función que será llamada desde el worker pool
+func (p *ImageProcessor) ProcessImageWithCtx(ctx context.Context, imageData []byte, mimetype string, preset config.ImagePreset) ([]byte, map[string]interface{}, error) {
+	// Verificar si el contexto ha sido cancelado antes de iniciar
+	select {
+	case <-ctx.Done():
+		return nil, nil, ctx.Err()
+	default:
+		// Continuar con el procesamiento
+	}
+	
+	// Procesar con verificaciones periódicas del contexto
+	doneCh := make(chan struct{})
+	resultCh := make(chan struct {
+		data []byte
+		info map[string]interface{}
+		err  error
+	})
+	
+	go func() {
+		defer close(doneCh)
+		
+		data, info, err := p.processImage(imageData, mimetype, preset)
+		select {
+		case <-ctx.Done():
+			// Contexto cancelado, abandonar resultado
+			return
+		case resultCh <- struct {
+			data []byte
+			info map[string]interface{}
+			err  error
+		}{data, info, err}:
+			// Resultado enviado correctamente
+		}
+	}()
+	
+	// Esperar resultado o cancelación
+	select {
+	case <-ctx.Done():
+		<-doneCh // Esperar a que la goroutine termine
+		return nil, nil, ctx.Err()
+	case result := <-resultCh:
+		return result.data, result.info, result.err
 	}
 }
 
@@ -488,13 +830,6 @@ func (p *ImageProcessor) processToJPEG(imageData []byte, preset config.ImagePres
 	// Convertir transparencia a fondo blanco para JPEG
 	if format == "png" {
 		// Crear imagen RGB con fondo blanco
-		background := image.NewRGBA(resizedImg.Bounds())
-		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
-			for x := bounds.Min.X; x < bounds.Max.X; x++ {
-				background.Set(x, y, image.White)
-			}
-		}
-		// Dibuja la imagen original sobre el fondo blanco
 		draw := imaging.New(resizedImg.Bounds().Dx(), resizedImg.Bounds().Dy(), image.White)
 		draw = imaging.Paste(draw, resizedImg, image.Point{0, 0})
 		resizedImg = draw
@@ -523,55 +858,6 @@ func (p *ImageProcessor) processToJPEG(imageData []byte, preset config.ImagePres
 
 	return buf.Bytes(), info, nil
 }
-
-// sendResponse envía la respuesta al servicio de origen
-func (p *ImageProcessor) sendResponse(response Response, delivery amqp.Delivery) {
-	// Convertir a JSON
-	responseJSON, err := json.Marshal(response)
-	if err != nil {
-		log.Printf("Error al serializar respuesta: %v", err)
-		return
-	}
-
-	// Verificar que la conexión esté disponible
-	if p.connection == nil || !p.connection.IsConnected() {
-		log.Println("Conexion no disponible, intentando reconectar para enviar respuesta")
-		p.connection = rabbitmq.NewRabbitMQConnection(config.Config.GetRabbitMQURLs()[0])
-		err = p.connection.Connect()
-		if err != nil {
-			log.Printf("Error al reconectar para enviar respuesta: %v", err)
-			return
-		}
-	}
-
-	// Enviar respuesta
-	correlationID := delivery.CorrelationId
-	err = p.connection.PublishMessage(
-		config.Config.QueueOut,
-		responseJSON,
-		correlationID,
-	)
-
-	if err != nil {
-		log.Printf("Error al enviar respuesta: %v", err)
-	} else {
-		log.Printf("Respuesta enviada correctamente a cola %s", config.Config.QueueOut)
-	}
-}
-
-// sendErrorResponse envía respuesta de error
-func (p *ImageProcessor) sendErrorResponse(messageID, filename, errorMessage string, delivery amqp.Delivery) {
-	errorResponse := Response{
-		ID:        messageID,
-		Processed: false,
-		Filename:  filename,
-		Error:     errorMessage,
-		Success:   false,
-	}
-
-	p.sendResponse(errorResponse, delivery)
-}
-
 
 // processToPNG convierte la imagen a formato PNG
 func (p *ImageProcessor) processToPNG(imageData []byte, preset config.ImagePreset) ([]byte, map[string]interface{}, error) {
@@ -622,59 +908,18 @@ func (p *ImageProcessor) processToPNG(imageData []byte, preset config.ImagePrese
 	return buf.Bytes(), info, nil
 }
 
-// processToWEBP convierte la imagen a formato WebP
-// processToWEBP convierte la imagen a formato WebP usando kolesa-team/go-webp
-// func (p *ImageProcessor) processToWEBP(imageData []byte, preset config.ImagePreset) ([]byte, map[string]interface{}, error) {
-//     // Decodificar imagen
-//     img, format, err := image.Decode(bytes.NewReader(imageData))
-//     if err != nil {
-//         return nil, nil, fmt.Errorf("error al decodificar imagen: %v", err)
-//     }
+// sendErrorResponse envía respuesta de error
+func (p *ImageProcessor) sendErrorResponse(messageID, filename, errorMessage string, correlationID string) {
+	errorResponse := Response{
+		ID:        messageID,
+		Processed: false,
+		Filename:  filename,
+		Error:     errorMessage,
+		Success:   false,
+	}
 
-//     // Obtener dimensiones originales
-//     bounds := img.Bounds()
-//     originalWidth := bounds.Dx()
-//     originalHeight := bounds.Dy()
-
-//     // Redimensionar si es necesario
-//     var resizedImg image.Image
-//     if originalWidth > preset.MaxWidth || originalHeight > preset.MaxHeight {
-//         if preset.PreserveAspectRatio {
-//             // Mantener proporción de aspecto
-//             resizedImg = imaging.Fit(img, preset.MaxWidth, preset.MaxHeight, imaging.Lanczos)
-//         } else {
-//             // Redimensionar sin mantener proporción
-//             resizedImg = imaging.Resize(img, preset.MaxWidth, preset.MaxHeight, imaging.Lanczos)
-//         }
-//     } else {
-//         resizedImg = img
-//     }
-
-//     // Crear un buffer para la salida
-//     buf := new(bytes.Buffer)
-
-//     // Intentar codificar con configuración lossy (con pérdida)
-//     // err = webp.Encode(buf, resizedImg, &webp.EncoderOptions{
-//     //     Lossless: false,
-//     //     Quality:  float32(preset.Quality),
-//     // })
-
-//     // if err != nil {
-//     //     return nil, nil, fmt.Errorf("error al codificar WebP: %v", err)
-//     // }
-
-//     // Información del procesamiento
-//     info := map[string]interface{}{
-//         "processor":      "golang-webp",
-//         "originalFormat": format,
-//         "newFormat":      "webp",
-//         "originalWidth":  originalWidth,
-//         "originalHeight": originalHeight,
-//         "newWidth":       resizedImg.Bounds().Dx(),
-//         "newHeight":      resizedImg.Bounds().Dy(),
-//         "quality":        preset.Quality,
-//     }
-
-//     return buf.Bytes(), info, nil
-// }
-
+	err := p.publishResponse(errorResponse, correlationID, "")
+	if err != nil {
+		p.log.WithError(err).Error("Error al enviar respuesta de error")
+	}
+}

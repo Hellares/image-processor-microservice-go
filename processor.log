@@ -1,51 +1,237 @@
-2025/04/11 22:39:47 Cargando configuraci├│n del sistema...
-2025/04/11 22:39:47 Archivo .env cargado correctamente desde: C:\Users\USER\Desktop\Proyecto principal\image-processing-microservice-go\.env
-2025/04/11 22:39:47 Modo de depuracion activado
-2025/04/11 22:39:47 Configuraci├│n cargada correctamente:
-2025/04/11 22:39:47 - RabbitMQ URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/11 22:39:47 - Cola de entrada: images-to-process
-2025/04/11 22:39:47 - Cola de salida: processed-images
-2025/04/11 22:39:47 - Trabajadores m├íximos: 4
-2025/04/11 22:39:47 - Modo Debug: true
-{"level":"info","message":"Sistema de logs inicializado","timestamp":"2025-04-11T22:39:47-05:00"}
-{"component":"main","level":"info","message":"============= SERVICIO DE PROCESAMIENTO DE IMAGENES =============","timestamp":"2025-04-11T22:39:47-05:00"}
-{"component":"main","level":"info","message":"Iniciando servicio de procesamiento de imagenes (Go)","timestamp":"2025-04-11T22:39:47-05:00"}
-2025/04/11 22:39:47 PID 25380 guardado en processor.pid
-{"component":"main","level":"info","message":"Creando procesador de imagenes...","timestamp":"2025-04-11T22:39:47-05:00"}
-2025/04/11 22:39:47 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/11 22:39:47 Todas las colas declaradas correctamente
-2025/04/11 22:39:47 Conexion establecida con RabbitMQ correctamente
-{"component":"main","level":"info","message":"Creando consumidor...","timestamp":"2025-04-11T22:39:47-05:00"}
-{"component":"main","level":"info","message":"Iniciando consumidor...","timestamp":"2025-04-11T22:39:47-05:00"}
-2025/04/11 22:39:47 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/11 22:39:48 Todas las colas declaradas correctamente
-2025/04/11 22:39:48 Conexion establecida con RabbitMQ correctamente
-2025/04/11 22:39:48 Solicitando suscripcion a cola 'images-to-process', autoAck=false
-2025/04/11 22:39:48 Intentando Consume() en cola 'images-to-process'
-2025/04/11 22:39:48 Suscripcion exitosa a cola 'images-to-process'
-{"component":"rabbitmq-consumer","level":"info","message":"Consumidor iniciado","queue":"images-to-process","timestamp":"2025-04-11T22:39:48-05:00"}
-{"component":"main","level":"info","message":"Enviando mensaje de prueba...","timestamp":"2025-04-11T22:39:49-05:00"}
-2025/04/11 22:39:49 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
-2025/04/11 22:39:49 Todas las colas declaradas correctamente
-2025/04/11 22:39:49 Conexion establecida con RabbitMQ correctamente
-2025/04/11 22:39:49 Mensaje de 184 bytes enviado a cola images-to-process
-{"component":"main","level":"info","message":"Mensaje de prueba enviado correctamente","timestamp":"2025-04-11T22:39:49-05:00"}
-2025/04/11 22:39:49 Mensaje recibido: 184 bytes
-2025/04/11 22:39:49 Mensaje recibido en ProcessMessage: 184 bytes
-2025/04/11 22:39:49 Mensaje en formato directo recibido
-2025/04/11 22:39:49 Procesando imagen: ID=test-123, Archivo=test.jpg
-2025/04/11 22:39:49 Imagen test.jpg procesada pero sin mejoras, usando original
-2025/04/11 22:39:49 Mensaje de 364 bytes enviado a cola processed-images
-2025/04/11 22:39:49 Respuesta enviada correctamente a cola processed-images
-2025/04/11 22:39:49 Mensaje procesado correctamente
-2025/04/11 22:39:49 Conexion con RabbitMQ cerrada correctamente
-{"component":"main","level":"info","message":"Servicio inicializado correctamente","timestamp":"2025-04-11T22:39:49-05:00"}
-{"component":"main","level":"info","message":"Esperando mensajes...","timestamp":"2025-04-11T22:39:49-05:00"}
-2025/04/11 22:39:57 Mensaje recibido: 1161382 bytes
-2025/04/11 22:39:57 Mensaje recibido en ProcessMessage: 1161382 bytes
-2025/04/11 22:39:57 Mensaje en formato NestJS recibido
-2025/04/11 22:39:57 Procesando imagen: ID=img_1744429197354_fcb2fd6b7b, Archivo=photo-1490237014491-822aee911b99.jpeg
-2025/04/11 22:39:57 Imagen procesada: photo-1490237014491-822aee911b99.jpeg - Reduccion: 67.67%, Tamanio: 850.30KB -> 274.91KB, Duracion: 225.00ms
-2025/04/11 22:39:58 Mensaje de 375857 bytes enviado a cola processed-images
-2025/04/11 22:39:58 Respuesta enviada correctamente a cola processed-images
-2025/04/11 22:39:58 Mensaje procesado correctamente
+2025/04/12 02:33:24 Cargando configuraci├│n del sistema...
+2025/04/12 02:33:24 Archivo .env cargado correctamente desde: C:\Users\USER\Desktop\Proyecto principal\image-processing-microservice-go\.env
+2025/04/12 02:33:24 Modo de depuracion activado
+2025/04/12 02:33:24 Configuraci├│n cargada correctamente:
+2025/04/12 02:33:24 - RabbitMQ URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+2025/04/12 02:33:24 - Cola de entrada: images-to-process
+2025/04/12 02:33:24 - Cola de salida: processed-images
+2025/04/12 02:33:24 - Trabajadores m├íximos: 2
+2025/04/12 02:33:24 - Modo Debug: true
+{"level":"info","message":"Sistema de logs inicializado","timestamp":"2025-04-12T02:33:24-05:00"}
+{"component":"main","level":"info","message":"============= SERVICIO DE PROCESAMIENTO DE IMAGENES =============","timestamp":"2025-04-12T02:33:24-05:00"}
+{"component":"main","level":"info","message":"Iniciando servicio de procesamiento de imagenes (Go)","timestamp":"2025-04-12T02:33:24-05:00"}
+2025/04/12 02:33:24 PID 25508 guardado en processor.pid
+{"component":"main","level":"info","message":"Creando procesador de imagenes...","timestamp":"2025-04-12T02:33:24-05:00"}
+2025/04/12 02:33:24 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+2025/04/12 02:33:24 Todas las colas declaradas correctamente
+2025/04/12 02:33:24 Conexion establecida con RabbitMQ correctamente
+2025/04/12 02:33:24 Iniciando WorkerPool con 2 workers (CPU cores: 32)
+{"component":"worker-pool","level":"info","message":"Iniciando pool con 2 workers","timestamp":"2025-04-12T02:33:24-05:00"}
+{"component":"main","level":"info","message":"Creando consumidor...","timestamp":"2025-04-12T02:33:24-05:00"}
+{"component":"main","level":"info","message":"Iniciando consumidor...","timestamp":"2025-04-12T02:33:24-05:00"}
+2025/04/12 02:33:24 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+{"component":"worker-pool","level":"info","message":"Worker iniciado","timestamp":"2025-04-12T02:33:24-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Iniciando procesamiento de resultados","timestamp":"2025-04-12T02:33:24-05:00"}
+{"component":"worker-pool","level":"info","message":"Worker iniciado","timestamp":"2025-04-12T02:33:24-05:00","worker_id":2}
+2025/04/12 02:33:24 Todas las colas declaradas correctamente
+2025/04/12 02:33:24 Conexion establecida con RabbitMQ correctamente
+2025/04/12 02:33:24 Solicitando suscripcion a cola 'images-to-process', autoAck=false
+2025/04/12 02:33:24 Intentando Consume() en cola 'images-to-process'
+2025/04/12 02:33:24 Suscripcion exitosa a cola 'images-to-process'
+{"component":"rabbitmq-consumer","level":"info","message":"Consumidor iniciado","queue":"images-to-process","timestamp":"2025-04-12T02:33:24-05:00"}
+{"component":"main","level":"info","message":"Enviando mensaje de prueba...","timestamp":"2025-04-12T02:33:25-05:00"}
+2025/04/12 02:33:25 Intentando conectar a URL: amqp://jtorres:jtorres159.@161.132.50.183:5672
+2025/04/12 02:33:26 Todas las colas declaradas correctamente
+2025/04/12 02:33:26 Conexion establecida con RabbitMQ correctamente
+2025/04/12 02:33:26 Mensaje de 184 bytes enviado a cola images-to-process
+{"component":"main","level":"info","message":"Mensaje de prueba enviado correctamente","timestamp":"2025-04-12T02:33:26-05:00"}
+2025/04/12 02:33:26 Mensaje recibido: 184 bytes
+{"component":"image-processor","correlation_id":"test-correlation","level":"info","message":"Mensaje recibido para procesamiento","message_id":"1744443206-82100","msg_size":184,"reply_to":"","timestamp":"2025-04-12T02:33:26-05:00"}
+{"component":"image-processor","correlation_id":"test-correlation","level":"info","message":"Encolando trabajo para procesamiento","message_id":"test-123","timestamp":"2025-04-12T02:33:26-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen test.jpg (68 bytes)","message_id":"test-123","timestamp":"2025-04-12T02:33:26-05:00","worker_id":1}
+2025/04/12 02:33:26 Mensaje procesado correctamente
+{"component":"worker-pool","duration_ms":0,"level":"info","message":"Imagen procesada: 68 bytes -\u003e 597 bytes","message_id":"test-123","timestamp":"2025-04-12T02:33:26-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Imagen procesada: test.jpg - Reducci├│n: -777.94%, Tama├▒o: 0.07KB -\u003e 0.58KB, Duraci├│n: 0.00ms","message_id":"test-123","timestamp":"2025-04-12T02:33:26-05:00"}
+2025/04/12 02:33:26 Mensaje de 1186 bytes enviado a cola processed-images
+2025/04/12 02:33:26 Conexion con RabbitMQ cerrada correctamente
+{"component":"main","level":"info","message":"Servicio inicializado correctamente","timestamp":"2025-04-12T02:33:26-05:00"}
+{"component":"main","level":"info","message":"Esperando mensajes...","timestamp":"2025-04-12T02:33:26-05:00"}
+2025/04/12 02:34:37 Mensaje recibido: 5115566 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":5115566,"reply_to":"","timestamp":"2025-04-12T02:34:37-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443276812_66581dc466","timestamp":"2025-04-12T02:34:37-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443276812_66581dc466","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443276812_66581dc466","timestamp":"2025-04-12T02:34:37-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg (3836321 bytes)","message_id":"img_1744443276812_66581dc466","timestamp":"2025-04-12T02:34:37-05:00","worker_id":2}
+2025/04/12 02:34:37 Mensaje procesado correctamente
+2025/04/12 02:34:37 Mensaje recibido: 7944592 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":7944592,"reply_to":"","timestamp":"2025-04-12T02:34:37-05:00"}
+{"component":"worker-pool","duration_ms":241,"level":"info","message":"Imagen procesada: 3836321 bytes -\u003e 208157 bytes","message_id":"img_1744443276812_66581dc466","timestamp":"2025-04-12T02:34:37-05:00","worker_id":2}
+{"component":"image-processor","level":"info","message":"Imagen procesada: wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg - Reducci├│n: 94.57%, Tama├▒o: 3746.41KB -\u003e 203.28KB, Duraci├│n: 241.00ms","message_id":"img_1744443276812_66581dc466","timestamp":"2025-04-12T02:34:37-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443276813_3a3459a152","timestamp":"2025-04-12T02:34:37-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443276813_3a3459a152","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443276813_3a3459a152","timestamp":"2025-04-12T02:34:37-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen mflywyr1j2ub1.jpeg (5958134 bytes)","message_id":"img_1744443276813_3a3459a152","timestamp":"2025-04-12T02:34:37-05:00","worker_id":1}
+2025/04/12 02:34:37 Mensaje procesado correctamente
+2025/04/12 02:34:37 Mensaje recibido: 1575571 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":1575571,"reply_to":"","timestamp":"2025-04-12T02:34:37-05:00"}
+2025/04/12 02:34:37 Mensaje de 278096 bytes enviado a cola processed-images
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443276815_7d79a55c22","timestamp":"2025-04-12T02:34:37-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443276815_7d79a55c22","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443276815_7d79a55c22","timestamp":"2025-04-12T02:34:37-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen 49435.jpg (1181375 bytes)","message_id":"img_1744443276815_7d79a55c22","timestamp":"2025-04-12T02:34:37-05:00","worker_id":2}
+2025/04/12 02:34:37 Mensaje procesado correctamente
+{"component":"worker-pool","duration_ms":142,"level":"info","message":"Imagen procesada: 5958134 bytes -\u003e 167864 bytes","message_id":"img_1744443276813_3a3459a152","timestamp":"2025-04-12T02:34:37-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Imagen procesada: mflywyr1j2ub1.jpeg - Reducci├│n: 97.18%, Tama├▒o: 5818.49KB -\u003e 163.93KB, Duraci├│n: 142.00ms","message_id":"img_1744443276813_3a3459a152","timestamp":"2025-04-12T02:34:37-05:00"}
+2025/04/12 02:34:37 Mensaje de 224314 bytes enviado a cola processed-images
+{"component":"worker-pool","duration_ms":164,"level":"info","message":"Imagen procesada: 1181375 bytes -\u003e 271371 bytes","message_id":"img_1744443276815_7d79a55c22","timestamp":"2025-04-12T02:34:37-05:00","worker_id":2}
+{"component":"image-processor","level":"info","message":"Imagen procesada: 49435.jpg - Reducci├│n: 77.03%, Tama├▒o: 1153.69KB -\u003e 265.01KB, Duraci├│n: 164.00ms","message_id":"img_1744443276815_7d79a55c22","timestamp":"2025-04-12T02:34:37-05:00"}
+2025/04/12 02:34:37 Mensaje de 362313 bytes enviado a cola processed-images
+2025/04/12 02:37:45 Mensaje recibido: 5115566 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":5115566,"reply_to":"","timestamp":"2025-04-12T02:37:45-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443464734_bd10bf0a42","timestamp":"2025-04-12T02:37:45-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443464734_bd10bf0a42","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443464734_bd10bf0a42","timestamp":"2025-04-12T02:37:45-05:00"}
+2025/04/12 02:37:45 Mensaje procesado correctamente
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg (3836321 bytes)","message_id":"img_1744443464734_bd10bf0a42","timestamp":"2025-04-12T02:37:45-05:00","worker_id":1}
+2025/04/12 02:37:45 Mensaje recibido: 7944592 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":7944592,"reply_to":"","timestamp":"2025-04-12T02:37:45-05:00"}
+{"component":"worker-pool","duration_ms":242,"level":"info","message":"Imagen procesada: 3836321 bytes -\u003e 208157 bytes","message_id":"img_1744443464734_bd10bf0a42","timestamp":"2025-04-12T02:37:45-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Imagen procesada: wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg - Reducci├│n: 94.57%, Tama├▒o: 3746.41KB -\u003e 203.28KB, Duraci├│n: 242.00ms","message_id":"img_1744443464734_bd10bf0a42","timestamp":"2025-04-12T02:37:45-05:00"}
+2025/04/12 02:37:45 Mensaje de 278096 bytes enviado a cola processed-images
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443464735_0a801e0e92","timestamp":"2025-04-12T02:37:45-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443464735_0a801e0e92","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443464735_0a801e0e92","timestamp":"2025-04-12T02:37:45-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen mflywyr1j2ub1.jpeg (5958134 bytes)","message_id":"img_1744443464735_0a801e0e92","timestamp":"2025-04-12T02:37:45-05:00","worker_id":2}
+2025/04/12 02:37:45 Mensaje procesado correctamente
+2025/04/12 02:37:45 Mensaje recibido: 1575571 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":1575571,"reply_to":"","timestamp":"2025-04-12T02:37:45-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443464736_f9cd51e326","timestamp":"2025-04-12T02:37:45-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443464736_f9cd51e326","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443464736_f9cd51e326","timestamp":"2025-04-12T02:37:45-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen 49435.jpg (1181375 bytes)","message_id":"img_1744443464736_f9cd51e326","timestamp":"2025-04-12T02:37:45-05:00","worker_id":1}
+2025/04/12 02:37:45 Mensaje procesado correctamente
+{"component":"worker-pool","duration_ms":157,"level":"info","message":"Imagen procesada: 5958134 bytes -\u003e 167864 bytes","message_id":"img_1744443464735_0a801e0e92","timestamp":"2025-04-12T02:37:45-05:00","worker_id":2}
+{"component":"image-processor","level":"info","message":"Imagen procesada: mflywyr1j2ub1.jpeg - Reducci├│n: 97.18%, Tama├▒o: 5818.49KB -\u003e 163.93KB, Duraci├│n: 157.00ms","message_id":"img_1744443464735_0a801e0e92","timestamp":"2025-04-12T02:37:45-05:00"}
+2025/04/12 02:37:45 Mensaje de 224314 bytes enviado a cola processed-images
+{"component":"worker-pool","duration_ms":164,"level":"info","message":"Imagen procesada: 1181375 bytes -\u003e 271371 bytes","message_id":"img_1744443464736_f9cd51e326","timestamp":"2025-04-12T02:37:45-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Imagen procesada: 49435.jpg - Reducci├│n: 77.03%, Tama├▒o: 1153.69KB -\u003e 265.01KB, Duraci├│n: 164.00ms","message_id":"img_1744443464736_f9cd51e326","timestamp":"2025-04-12T02:37:45-05:00"}
+2025/04/12 02:37:45 Mensaje de 362313 bytes enviado a cola processed-images
+2025/04/12 02:38:31 Mensaje recibido: 5115566 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":5115566,"reply_to":"","timestamp":"2025-04-12T02:38:31-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443510908_ece4c01a52","timestamp":"2025-04-12T02:38:31-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443510908_ece4c01a52","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443510908_ece4c01a52","timestamp":"2025-04-12T02:38:31-05:00"}
+2025/04/12 02:38:31 Mensaje procesado correctamente
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg (3836321 bytes)","message_id":"img_1744443510908_ece4c01a52","timestamp":"2025-04-12T02:38:31-05:00","worker_id":2}
+{"component":"worker-pool","duration_ms":237,"level":"info","message":"Imagen procesada: 3836321 bytes -\u003e 208157 bytes","message_id":"img_1744443510908_ece4c01a52","timestamp":"2025-04-12T02:38:31-05:00","worker_id":2}
+{"component":"image-processor","level":"info","message":"Imagen procesada: wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg - Reducci├│n: 94.57%, Tama├▒o: 3746.41KB -\u003e 203.28KB, Duraci├│n: 237.00ms","message_id":"img_1744443510908_ece4c01a52","timestamp":"2025-04-12T02:38:31-05:00"}
+2025/04/12 02:38:31 Mensaje de 278096 bytes enviado a cola processed-images
+2025/04/12 02:38:31 Mensaje recibido: 7944592 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":7944592,"reply_to":"","timestamp":"2025-04-12T02:38:31-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443510909_756fa4e4eb","timestamp":"2025-04-12T02:38:31-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443510909_756fa4e4eb","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443510909_756fa4e4eb","timestamp":"2025-04-12T02:38:31-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen mflywyr1j2ub1.jpeg (5958134 bytes)","message_id":"img_1744443510909_756fa4e4eb","timestamp":"2025-04-12T02:38:31-05:00","worker_id":1}
+2025/04/12 02:38:31 Mensaje procesado correctamente
+2025/04/12 02:38:31 Mensaje recibido: 1575571 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":1575571,"reply_to":"","timestamp":"2025-04-12T02:38:31-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443510910_2c7be2a700","timestamp":"2025-04-12T02:38:31-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443510910_2c7be2a700","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443510910_2c7be2a700","timestamp":"2025-04-12T02:38:31-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen 49435.jpg (1181375 bytes)","message_id":"img_1744443510910_2c7be2a700","timestamp":"2025-04-12T02:38:31-05:00","worker_id":2}
+2025/04/12 02:38:31 Mensaje procesado correctamente
+{"component":"worker-pool","duration_ms":152,"level":"info","message":"Imagen procesada: 5958134 bytes -\u003e 167864 bytes","message_id":"img_1744443510909_756fa4e4eb","timestamp":"2025-04-12T02:38:31-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Imagen procesada: mflywyr1j2ub1.jpeg - Reducci├│n: 97.18%, Tama├▒o: 5818.49KB -\u003e 163.93KB, Duraci├│n: 152.00ms","message_id":"img_1744443510909_756fa4e4eb","timestamp":"2025-04-12T02:38:31-05:00"}
+2025/04/12 02:38:31 Mensaje de 224314 bytes enviado a cola processed-images
+{"component":"worker-pool","duration_ms":197,"level":"info","message":"Imagen procesada: 1181375 bytes -\u003e 271371 bytes","message_id":"img_1744443510910_2c7be2a700","timestamp":"2025-04-12T02:38:32-05:00","worker_id":2}
+{"component":"image-processor","level":"info","message":"Imagen procesada: 49435.jpg - Reducci├│n: 77.03%, Tama├▒o: 1153.69KB -\u003e 265.01KB, Duraci├│n: 197.00ms","message_id":"img_1744443510910_2c7be2a700","timestamp":"2025-04-12T02:38:32-05:00"}
+2025/04/12 02:38:32 Mensaje de 362313 bytes enviado a cola processed-images
+2025/04/12 02:42:43 Mensaje recibido: 5115566 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":5115566,"reply_to":"","timestamp":"2025-04-12T02:42:43-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443763000_c8fa69ae99","timestamp":"2025-04-12T02:42:43-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443763000_c8fa69ae99","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443763000_c8fa69ae99","timestamp":"2025-04-12T02:42:43-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg (3836321 bytes)","message_id":"img_1744443763000_c8fa69ae99","timestamp":"2025-04-12T02:42:43-05:00","worker_id":1}
+2025/04/12 02:42:43 Mensaje procesado correctamente
+2025/04/12 02:42:43 Mensaje recibido: 7944592 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":7944592,"reply_to":"","timestamp":"2025-04-12T02:42:43-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443763001_a60e60783f","timestamp":"2025-04-12T02:42:43-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443763001_a60e60783f","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443763001_a60e60783f","timestamp":"2025-04-12T02:42:43-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen mflywyr1j2ub1.jpeg (5958134 bytes)","message_id":"img_1744443763001_a60e60783f","timestamp":"2025-04-12T02:42:43-05:00","worker_id":2}
+2025/04/12 02:42:43 Mensaje procesado correctamente
+2025/04/12 02:42:43 Mensaje recibido: 1575571 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":1575571,"reply_to":"","timestamp":"2025-04-12T02:42:43-05:00"}
+{"component":"worker-pool","duration_ms":250,"level":"info","message":"Imagen procesada: 3836321 bytes -\u003e 208157 bytes","message_id":"img_1744443763000_c8fa69ae99","timestamp":"2025-04-12T02:42:43-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Imagen procesada: wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg - Reducci├│n: 94.57%, Tama├▒o: 3746.41KB -\u003e 203.28KB, Duraci├│n: 250.00ms","message_id":"img_1744443763000_c8fa69ae99","timestamp":"2025-04-12T02:42:43-05:00"}
+2025/04/12 02:42:43 Mensaje de 278096 bytes enviado a cola processed-images
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744443763002_534c87178f","timestamp":"2025-04-12T02:42:43-05:00"}
+{"component":"image-processor","correlation_id":"img_1744443763002_534c87178f","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744443763002_534c87178f","timestamp":"2025-04-12T02:42:43-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen 49435.jpg (1181375 bytes)","message_id":"img_1744443763002_534c87178f","timestamp":"2025-04-12T02:42:43-05:00","worker_id":1}
+2025/04/12 02:42:43 Mensaje procesado correctamente
+{"component":"worker-pool","duration_ms":142,"level":"info","message":"Imagen procesada: 5958134 bytes -\u003e 167864 bytes","message_id":"img_1744443763001_a60e60783f","timestamp":"2025-04-12T02:42:43-05:00","worker_id":2}
+{"component":"image-processor","level":"info","message":"Imagen procesada: mflywyr1j2ub1.jpeg - Reducci├│n: 97.18%, Tama├▒o: 5818.49KB -\u003e 163.93KB, Duraci├│n: 142.00ms","message_id":"img_1744443763001_a60e60783f","timestamp":"2025-04-12T02:42:43-05:00"}
+2025/04/12 02:42:43 Mensaje de 224314 bytes enviado a cola processed-images
+{"component":"worker-pool","duration_ms":164,"level":"info","message":"Imagen procesada: 1181375 bytes -\u003e 271371 bytes","message_id":"img_1744443763002_534c87178f","timestamp":"2025-04-12T02:42:43-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Imagen procesada: 49435.jpg - Reducci├│n: 77.03%, Tama├▒o: 1153.69KB -\u003e 265.01KB, Duraci├│n: 164.00ms","message_id":"img_1744443763002_534c87178f","timestamp":"2025-04-12T02:42:43-05:00"}
+2025/04/12 02:42:43 Mensaje de 362313 bytes enviado a cola processed-images
+2025/04/12 02:54:59 Mensaje recibido: 5115566 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":5115566,"reply_to":"","timestamp":"2025-04-12T02:54:59-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744444499098_383978ad9c","timestamp":"2025-04-12T02:54:59-05:00"}
+{"component":"image-processor","correlation_id":"img_1744444499098_383978ad9c","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744444499098_383978ad9c","timestamp":"2025-04-12T02:54:59-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg (3836321 bytes)","message_id":"img_1744444499098_383978ad9c","timestamp":"2025-04-12T02:54:59-05:00","worker_id":2}
+2025/04/12 02:54:59 Mensaje procesado correctamente
+{"component":"worker-pool","duration_ms":232,"level":"info","message":"Imagen procesada: 3836321 bytes -\u003e 208157 bytes","message_id":"img_1744444499098_383978ad9c","timestamp":"2025-04-12T02:55:00-05:00","worker_id":2}
+{"component":"image-processor","level":"info","message":"Imagen procesada: wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg - Reducci├│n: 94.57%, Tama├▒o: 3746.41KB -\u003e 203.28KB, Duraci├│n: 232.00ms","message_id":"img_1744444499098_383978ad9c","timestamp":"2025-04-12T02:55:00-05:00"}
+2025/04/12 02:55:00 Mensaje de 278096 bytes enviado a cola processed-images
+2025/04/12 02:55:00 Mensaje recibido: 7944592 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":7944592,"reply_to":"","timestamp":"2025-04-12T02:55:00-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744444499099_48f9b92ff0","timestamp":"2025-04-12T02:55:00-05:00"}
+{"component":"image-processor","correlation_id":"img_1744444499099_48f9b92ff0","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744444499099_48f9b92ff0","timestamp":"2025-04-12T02:55:00-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen mflywyr1j2ub1.jpeg (5958134 bytes)","message_id":"img_1744444499099_48f9b92ff0","timestamp":"2025-04-12T02:55:00-05:00","worker_id":1}
+2025/04/12 02:55:00 Mensaje procesado correctamente
+2025/04/12 02:55:00 Mensaje recibido: 1575571 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":1575571,"reply_to":"","timestamp":"2025-04-12T02:55:00-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744444499100_f9d00f601f","timestamp":"2025-04-12T02:55:00-05:00"}
+{"component":"image-processor","correlation_id":"img_1744444499100_f9d00f601f","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744444499100_f9d00f601f","timestamp":"2025-04-12T02:55:00-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen 49435.jpg (1181375 bytes)","message_id":"img_1744444499100_f9d00f601f","timestamp":"2025-04-12T02:55:00-05:00","worker_id":2}
+2025/04/12 02:55:00 Mensaje procesado correctamente
+{"component":"worker-pool","duration_ms":129,"level":"info","message":"Imagen procesada: 5958134 bytes -\u003e 167864 bytes","message_id":"img_1744444499099_48f9b92ff0","timestamp":"2025-04-12T02:55:00-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Imagen procesada: mflywyr1j2ub1.jpeg - Reducci├│n: 97.18%, Tama├▒o: 5818.49KB -\u003e 163.93KB, Duraci├│n: 129.00ms","message_id":"img_1744444499099_48f9b92ff0","timestamp":"2025-04-12T02:55:00-05:00"}
+2025/04/12 02:55:00 Mensaje de 224314 bytes enviado a cola processed-images
+{"component":"worker-pool","duration_ms":173,"level":"info","message":"Imagen procesada: 1181375 bytes -\u003e 271371 bytes","message_id":"img_1744444499100_f9d00f601f","timestamp":"2025-04-12T02:55:00-05:00","worker_id":2}
+{"component":"image-processor","level":"info","message":"Imagen procesada: 49435.jpg - Reducci├│n: 77.03%, Tama├▒o: 1153.69KB -\u003e 265.01KB, Duraci├│n: 173.00ms","message_id":"img_1744444499100_f9d00f601f","timestamp":"2025-04-12T02:55:00-05:00"}
+2025/04/12 02:55:00 Mensaje de 362313 bytes enviado a cola processed-images
+2025/04/12 02:59:30 Mensaje recibido: 5115566 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":5115566,"reply_to":"","timestamp":"2025-04-12T02:59:30-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744444770128_1b54dec466","timestamp":"2025-04-12T02:59:30-05:00"}
+{"component":"image-processor","correlation_id":"img_1744444770128_1b54dec466","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744444770128_1b54dec466","timestamp":"2025-04-12T02:59:30-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg (3836321 bytes)","message_id":"img_1744444770128_1b54dec466","timestamp":"2025-04-12T02:59:30-05:00","worker_id":1}
+2025/04/12 02:59:30 Mensaje procesado correctamente
+{"component":"worker-pool","duration_ms":230,"level":"info","message":"Imagen procesada: 3836321 bytes -\u003e 208157 bytes","message_id":"img_1744444770128_1b54dec466","timestamp":"2025-04-12T02:59:30-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Imagen procesada: wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg - Reducci├│n: 94.57%, Tama├▒o: 3746.41KB -\u003e 203.28KB, Duraci├│n: 230.00ms","message_id":"img_1744444770128_1b54dec466","timestamp":"2025-04-12T02:59:30-05:00"}
+2025/04/12 02:59:30 Mensaje de 278096 bytes enviado a cola processed-images
+2025/04/12 02:59:30 Mensaje recibido: 7944592 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":7944592,"reply_to":"","timestamp":"2025-04-12T02:59:30-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744444770129_e2eabeb7da","timestamp":"2025-04-12T02:59:30-05:00"}
+{"component":"image-processor","correlation_id":"img_1744444770129_e2eabeb7da","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744444770129_e2eabeb7da","timestamp":"2025-04-12T02:59:30-05:00"}
+2025/04/12 02:59:30 Mensaje procesado correctamente
+2025/04/12 02:59:30 Mensaje recibido: 1575571 bytes
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen mflywyr1j2ub1.jpeg (5958134 bytes)","message_id":"img_1744444770129_e2eabeb7da","timestamp":"2025-04-12T02:59:30-05:00","worker_id":2}
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":1575571,"reply_to":"","timestamp":"2025-04-12T02:59:30-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744444770131_01a202824c","timestamp":"2025-04-12T02:59:30-05:00"}
+{"component":"image-processor","correlation_id":"img_1744444770131_01a202824c","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744444770131_01a202824c","timestamp":"2025-04-12T02:59:30-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen 49435.jpg (1181375 bytes)","message_id":"img_1744444770131_01a202824c","timestamp":"2025-04-12T02:59:30-05:00","worker_id":1}
+2025/04/12 02:59:30 Mensaje procesado correctamente
+{"component":"worker-pool","duration_ms":129,"level":"info","message":"Imagen procesada: 5958134 bytes -\u003e 167864 bytes","message_id":"img_1744444770129_e2eabeb7da","timestamp":"2025-04-12T02:59:31-05:00","worker_id":2}
+{"component":"image-processor","level":"info","message":"Imagen procesada: mflywyr1j2ub1.jpeg - Reducci├│n: 97.18%, Tama├▒o: 5818.49KB -\u003e 163.93KB, Duraci├│n: 129.00ms","message_id":"img_1744444770129_e2eabeb7da","timestamp":"2025-04-12T02:59:31-05:00"}
+2025/04/12 02:59:31 Mensaje de 224314 bytes enviado a cola processed-images
+{"component":"worker-pool","duration_ms":154,"level":"info","message":"Imagen procesada: 1181375 bytes -\u003e 271371 bytes","message_id":"img_1744444770131_01a202824c","timestamp":"2025-04-12T02:59:31-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Imagen procesada: 49435.jpg - Reducci├│n: 77.03%, Tama├▒o: 1153.69KB -\u003e 265.01KB, Duraci├│n: 154.00ms","message_id":"img_1744444770131_01a202824c","timestamp":"2025-04-12T02:59:31-05:00"}
+2025/04/12 02:59:31 Mensaje de 362313 bytes enviado a cola processed-images
+2025/04/12 03:10:51 Mensaje recibido: 5115566 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":5115566,"reply_to":"","timestamp":"2025-04-12T03:10:51-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744445451346_0fe147221e","timestamp":"2025-04-12T03:10:51-05:00"}
+{"component":"image-processor","correlation_id":"img_1744445451346_0fe147221e","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744445451346_0fe147221e","timestamp":"2025-04-12T03:10:51-05:00"}
+2025/04/12 03:10:51 Mensaje procesado correctamente
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg (3836321 bytes)","message_id":"img_1744445451346_0fe147221e","timestamp":"2025-04-12T03:10:51-05:00","worker_id":2}
+{"component":"worker-pool","duration_ms":232,"level":"info","message":"Imagen procesada: 3836321 bytes -\u003e 208157 bytes","message_id":"img_1744445451346_0fe147221e","timestamp":"2025-04-12T03:10:52-05:00","worker_id":2}
+{"component":"image-processor","level":"info","message":"Imagen procesada: wallpapersden.com_surreal-psychedelic-landscape-amazing-ai-art_3840x2160.jpg - Reducci├│n: 94.57%, Tama├▒o: 3746.41KB -\u003e 203.28KB, Duraci├│n: 232.00ms","message_id":"img_1744445451346_0fe147221e","timestamp":"2025-04-12T03:10:52-05:00"}
+2025/04/12 03:10:52 Mensaje de 278096 bytes enviado a cola processed-images
+2025/04/12 03:10:52 Mensaje recibido: 7944592 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":7944592,"reply_to":"","timestamp":"2025-04-12T03:10:52-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744445451347_d6e6e90aac","timestamp":"2025-04-12T03:10:52-05:00"}
+{"component":"image-processor","correlation_id":"img_1744445451347_d6e6e90aac","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744445451347_d6e6e90aac","timestamp":"2025-04-12T03:10:52-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen mflywyr1j2ub1.jpeg (5958134 bytes)","message_id":"img_1744445451347_d6e6e90aac","timestamp":"2025-04-12T03:10:52-05:00","worker_id":1}
+2025/04/12 03:10:52 Mensaje procesado correctamente
+2025/04/12 03:10:52 Mensaje recibido: 1575571 bytes
+{"component":"image-processor","correlation_id":"","level":"info","message":"Mensaje recibido para procesamiento","message_id":"","msg_size":1575571,"reply_to":"","timestamp":"2025-04-12T03:10:52-05:00"}
+{"component":"image-processor","level":"warning","message":"CorrelationID no disponible en el mensaje, usando MessageID como alternativa","message_id":"img_1744445451349_26ea7dcce6","timestamp":"2025-04-12T03:10:52-05:00"}
+{"component":"image-processor","correlation_id":"img_1744445451349_26ea7dcce6","level":"info","message":"Encolando trabajo para procesamiento","message_id":"img_1744445451349_26ea7dcce6","timestamp":"2025-04-12T03:10:52-05:00"}
+{"component":"worker-pool","level":"info","message":"Iniciando procesamiento de imagen 49435.jpg (1181375 bytes)","message_id":"img_1744445451349_26ea7dcce6","timestamp":"2025-04-12T03:10:52-05:00","worker_id":2}
+2025/04/12 03:10:52 Mensaje procesado correctamente
+{"component":"worker-pool","duration_ms":133,"level":"info","message":"Imagen procesada: 5958134 bytes -\u003e 167864 bytes","message_id":"img_1744445451347_d6e6e90aac","timestamp":"2025-04-12T03:10:52-05:00","worker_id":1}
+{"component":"image-processor","level":"info","message":"Imagen procesada: mflywyr1j2ub1.jpeg - Reducci├│n: 97.18%, Tama├▒o: 5818.49KB -\u003e 163.93KB, Duraci├│n: 133.00ms","message_id":"img_1744445451347_d6e6e90aac","timestamp":"2025-04-12T03:10:52-05:00"}
+2025/04/12 03:10:52 Mensaje de 224314 bytes enviado a cola processed-images
+{"component":"worker-pool","duration_ms":157,"level":"info","message":"Imagen procesada: 1181375 bytes -\u003e 271371 bytes","message_id":"img_1744445451349_26ea7dcce6","timestamp":"2025-04-12T03:10:52-05:00","worker_id":2}
+{"component":"image-processor","level":"info","message":"Imagen procesada: 49435.jpg - Reducci├│n: 77.03%, Tama├▒o: 1153.69KB -\u003e 265.01KB, Duraci├│n: 157.00ms","message_id":"img_1744445451349_26ea7dcce6","timestamp":"2025-04-12T03:10:52-05:00"}
+2025/04/12 03:10:52 Mensaje de 362313 bytes enviado a cola processed-images
