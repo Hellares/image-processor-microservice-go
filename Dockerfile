@@ -36,7 +36,7 @@ WORKDIR /app
 COPY --from=builder /app/processor .
 
 # Establecer variables de entorno
-ENV RABBITMQ_SERVERS="amqp://jtorres:jtorres159.@161.132.50.183:5672" \
+ENV RABBITMQ_SERVERS="amqp://jtorres:jtorres159.@172.20.0.2:5672" \
     QUEUE_IN="images-to-process" \
     QUEUE_OUT="processed-images" \
     QUEUE_DLX="images-process-failed" \
@@ -49,9 +49,9 @@ ENV RABBITMQ_SERVERS="amqp://jtorres:jtorres159.@161.132.50.183:5672" \
     RABBITMQ_BLOCKED_CONNECTION_TIMEOUT="300" \
     RABBITMQ_CONNECTION_TIMEOUT="20000" \
     RABBITMQ_RETRY_DELAY="5" \
-    DEBUG="true" \
+    DEBUG="false" \
     LOG_LEVEL="info" \
-    LOG_TO_FILE="false" \
+    LOG_TO_FILE="true" \
     LOG_DIR="/app/logs"
 
 # Cambiar al usuario no root para seguridad

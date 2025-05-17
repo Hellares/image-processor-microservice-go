@@ -12,7 +12,7 @@ services:
       - ./logs:/app/logs
     environment:
       # Configuración de RabbitMQ
-      RABBITMQ_SERVERS: "amqp://jtorres:jtorres159.@161.132.50.183:5672"
+      RABBITMQ_SERVERS: "amqp://jtorres:jtorres159.@172.20.0.2:5672"
       
       # Colas
       QUEUE_IN: "images-to-process"
@@ -41,7 +41,7 @@ services:
       # Modo debug desactivado en producción
       DEBUG: "false"
     networks:
-      - elastika-network
+      - microservices_network
     # Limitar recursos para evitar sobrecarga
     deploy:
       resources:
@@ -56,6 +56,9 @@ services:
       options:
         max-size: "20m"
         max-file: "5"
+networks:
+  microservices_network:
+    external: true
   
 #   prometheus:
 #     image: prom/prometheus:latest

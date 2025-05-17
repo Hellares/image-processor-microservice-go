@@ -55,6 +55,7 @@ type Message struct {
 	CompanyID   string      `json:"companyId,omitempty"`
 	UserID      string      `json:"userId,omitempty"`
 	Module      string      `json:"module,omitempty"`
+	Options     interface{} `json:"options,omitempty"`
 	Preset      string      `json:"preset,omitempty"`
 	MaxWidth    int         `json:"maxWidth,omitempty"`
 	MaxHeight   int         `json:"maxHeight,omitempty"`
@@ -128,11 +129,11 @@ func min(a, b int) int {
 
 // Stop detiene el procesador y sus componentes
 func (p *ImageProcessor) Stop() {
-	p.log.Info("Deteniendo procesador de imágenes")
+	p.log.Info("Deteniendo procesador de imagenes")
 	p.cancel()
 	close(p.stopChan)
 	p.workerPool.Stop()
-	p.log.Info("Procesador de imágenes detenido")
+	p.log.Info("Procesador de imagenes detenido")
 }
 
 // processResults procesa los resultados del worker pool
@@ -289,7 +290,7 @@ func (p *ImageProcessor) processResults() {
 					response.Reduction = fmt.Sprintf("%.2f%%", reductionPercent)
 					
 					p.log.WithField("message_id", result.MessageID).
-						Infof("Imagen procesada: %s - Reducción: %.2f%%, Tamaño: %.2fKB -> %.2fKB, Duración: %.2fms",
+						Infof("Imagen procesada: %s - Reduccion: %.2f%%, Tamanio: %.2fKB -> %.2fKB, Duracion: %.2fms",
 							result.Filename, reductionPercent, 
 							float64(result.OriginalSize)/1024, 
 							float64(result.ProcessedSize)/1024, 
@@ -344,7 +345,7 @@ func (p *ImageProcessor) processResults() {
 				}
 			} else {
 				p.log.WithField("message_id", result.MessageID).
-					Error("No se puede enviar respuesta, no hay ID para correlación")
+					Error("No se puede enviar respuesta, no hay ID para correlacion")
 			}
 		}
 	}
@@ -365,7 +366,7 @@ func (p *ImageProcessor) publishResponse(response Response, correlationID string
 
 	// Verificar que la conexión esté disponible
 	if p.connection == nil || !p.connection.IsConnected() {
-		p.log.Info("Conexión no disponible, intentando reconectar para enviar respuesta")
+		p.log.Info("Conexion no disponible, intentando reconectar para enviar respuesta")
 		p.connection = rabbitmq.NewRabbitMQConnection(config.Config.GetRabbitMQURLs()[0])
 		err = p.connection.Connect()
 		if err != nil {
@@ -484,19 +485,71 @@ func (p *ImageProcessor) ProcessMessage(body []byte, delivery amqp.Delivery) err
 		module = "general"
 	}
 
-	// Obtener configuración del preset
-	presetName := message.Preset
-	if presetName == "" {
-		presetName = "default"
+	// Obtener configuración del preset	
+	// presetName := message.Preset
+	var presetName string = "default"
+	var maxWidth, maxHeight, quality int
+	var format string
+
+	if message.Options != nil {
+		// Intentar convertir a mapa
+		if optionsMap, ok := message.Options.(map[string]interface{}); ok {
+			// Extraer valores
+			if preset, ok := optionsMap["imagePreset"].(string); ok && preset != "" {
+				presetName = preset
+			}
+			if width, ok := optionsMap["maxWidth"].(float64); ok {
+				maxWidth = int(width)
+			}
+			if height, ok := optionsMap["maxHeight"].(float64); ok {
+				maxHeight = int(height)
+			}
+			if q, ok := optionsMap["quality"].(float64); ok {
+				quality = int(q)
+			}
+			if fmt, ok := optionsMap["format"].(string); ok {
+				format = fmt
+			}
+		}
 	}
 
+	if message.Preset != "" {
+		presetName = message.Preset
+	}
+	if message.MaxWidth > 0 {
+		maxWidth = message.MaxWidth
+	}
+	if message.MaxHeight > 0 {
+		maxHeight = message.MaxHeight
+	}
+	if message.Quality > 0 {
+		quality = message.Quality
+	}
+	if message.Format != "" {
+		format = message.Format
+	}
+
+
+
+
+	// if presetName == "" {
+	// 	presetName = "default"
+	// }
+
 	// Obtener preset
+	// options := map[string]interface{}{
+	// 	"imagePreset": presetName,
+	// 	"maxWidth":    message.MaxWidth,
+	// 	"maxHeight":   message.MaxHeight,
+	// 	"quality":     message.Quality,
+	// 	"format":      message.Format,
+	// }
 	options := map[string]interface{}{
 		"imagePreset": presetName,
-		"maxWidth":    message.MaxWidth,
-		"maxHeight":   message.MaxHeight,
-		"quality":     message.Quality,
-		"format":      message.Format,
+		"maxWidth":    maxWidth,
+		"maxHeight":   maxHeight,
+		"quality":     quality,
+		"format":      format,
 	}
 
 	preset := p.getPresetFromOptions(options)

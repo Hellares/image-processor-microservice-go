@@ -30,7 +30,7 @@ func main() {
 
 	// Mostrar versión si se solicita
 	if *showVersion {
-		fmt.Println("Servicio de procesamiento de imágenes v1.0.0")
+		fmt.Println("Servicio de procesamiento de imagenes v1.0.0")
 		os.Exit(0)
 	}
 
@@ -115,11 +115,11 @@ func main() {
 
 	// Esperar señal
 	<-stopChan
-	log.Println("Señal de terminacion recibida. Iniciando apagado ordenado...")
+	log.Println("Senial de terminacion recibida. Iniciando apagado ordenado...")
 
 
 	// Detener procesador de imágenes
-	log.Println("Deteniendo procesador de imágenes...")
+	log.Println("Deteniendo procesador de imagenes...")
 	imageProcessor.Stop()
 
 	// Detener consumidor

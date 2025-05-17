@@ -243,11 +243,18 @@ func LoadConfig() {
 		"profile": {
 			MaxWidth:           500,
 			MaxHeight:          500,
-			Quality:            90,
+			Quality:            85,
 			Format:             FormatJPEG,
 			PreserveAspectRatio: true,
 		},
-		"PRODUCTO": {
+		"servicio": {
+			MaxWidth:           720,
+			MaxHeight:          480,
+			Quality:            85,
+			Format:             FormatJPEG,
+			PreserveAspectRatio: false,
+		},
+		"producto": {
 			MaxWidth:           1200,
 			MaxHeight:          1200,
 			Quality:            85,
@@ -255,8 +262,8 @@ func LoadConfig() {
 			PreserveAspectRatio: true,
 		},
 		"banner": {
-			MaxWidth:           1920,
-			MaxHeight:          1080,
+			MaxWidth:           1280,
+			MaxHeight:          720,
 			Quality:            80,
 			Format:             FormatJPEG,
 			PreserveAspectRatio: true,
