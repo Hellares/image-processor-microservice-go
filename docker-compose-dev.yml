@@ -11,11 +11,11 @@ services:
       - ./logs:/app/logs
     environment:
       # Puedes sobrescribir cualquier variable de entorno aquí
-      RABBITMQ_SERVERS: "amqp://jtorres:jtorres159.@161.132.50.183:5672"
+      RABBITMQ_SERVERS: "amqp://admin:admin123@86.48.26.221:5672"
       DEBUG: "true"
       MAX_WORKERS: "6"
     networks:
-      - processor-network
+      - elastika-network
     # Depender de RabbitMQ si lo ejecutas localmente
     # depends_on:
     #   - rabbitmq
@@ -36,7 +36,7 @@ services:
   #     - processor-network
 
 networks:
-  processor-network:
+  elastika-network:
     driver: bridge
 
 # Volumes para persistencia
