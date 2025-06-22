@@ -131,7 +131,7 @@ func findAndLoadEnvFile() bool {
 // Crea un archivo .env con valores predeterminados
 func createDefaultEnvFile() error {
 	// Contenido predeterminado basado en las variables vistas en tu .env original
-	defaultEnvContent := `RABBITMQ_SERVERS="amqp://jtorres:jtorres159.@161.132.50.183:5672"
+	defaultEnvContent := `RABBITMQ_SERVERS="amqp://jtorres:jtorres159.@86.48.26.221:5672"
 
 # Colas
 QUEUE_IN=images-to-process
